@@ -10,6 +10,13 @@ namespace UML_CSharp
 
 public class LibrarySystem
     {
+
+            private string libraryname;
+            string[] books;
+            double[] fines;
+            Catalog[] catalogs;
+            Book[] books;
+            string email;
         private List<User> users;
         private string usersFilePath="users.txt";
 
@@ -192,6 +199,8 @@ public class LibrarySystem
             // Admin subclass with additional methods
             public class Admin : User
             {
+                private string workschedule;
+
                 public Admin(string name, string username, string password, string email) : base(name, username, password, email, UserRole.Admin)
                 {
                 }
@@ -220,6 +229,33 @@ public class LibrarySystem
         NormalUser,
         Admin
     }
+
+        class Catalog
+        {
+
+            Book booksgenre;
+            public void AddBookToGenre() { }
+            public void RemoveBookFromGenre()
+            {
+            }
+            public void ShowGenre() { }
+
+        class Book
+        {
+            string title;
+            string author;
+            int publicationyear;
+            string genre;
+            int ISBN;
+            bool availabilitystatus;
+            int copies;
+           public void ShowBookInfo(Book book) { }
+           public void EditCopiesNumber() { }
+            public void EditAvaliabilityStatus()
+            {
+            }
+            public void SendNewBookInfo() { }
+            public void ShowISBN() { }
         static void Main(string[] args)
         {
             LibrarySystem librarySystem = new LibrarySystem("users.txt");
