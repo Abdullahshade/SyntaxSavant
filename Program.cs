@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -196,7 +196,7 @@ public class LibrarySystem
                 {
                 }
 
-                public void ViewAllUsers(List<User> users)
+                public void ManageUserAccounts(List<User> users)
                 {
                     Console.WriteLine("All users:");
                     foreach (User user in users)
@@ -270,7 +270,7 @@ public class LibrarySystem
                         if (adminChoice == 1)
                         {
                             List<User> users = librarySystem.GetUsers();
-                            ((User.Admin)currentUser).ViewAllUsers(users);
+                            ((User.Admin)currentUser).ManageUserAccounts(users);
                         }
                         else if (adminChoice == 2)
                         {
