@@ -32,10 +32,7 @@ namespace UML_Project
       
 
         
-        public UserRole GetRole()
-        {
-            return role;
-        }
+        
 
 
         public static bool IsValidName(string name)

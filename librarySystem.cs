@@ -145,7 +145,7 @@ public class LibrarySystem
                 {
                     foreach (User user in users)
                     {
-                        string line = string.Join(",", user.Name, user.Username, user.Password, user.GetRole().ToString(),counter);
+                        string line = string.Join(",", user.Name, user.Username, user.Password, user.Role.ToString(),counter);
                         writer.WriteLine(line);
                         counter++;
                     }
