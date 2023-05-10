@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,7 @@ namespace Book
         string ISBN;
         bool availabilitystatus;
         int copies;
+        List<string> previousISBNs = new List<string>();
 
         public string ISBN1 { get => ISBN; set => ISBN = value; }
 
@@ -28,25 +29,42 @@ namespace Book
             this.availabilitystatus = availabilitystatus;
             this.copies = copies;
         }
+
         public string GenerateISBN()
         {
             Random random = new Random();
             string isbn = "978";
-            for (int i = 0; i < 7; i++)
-            {
-                isbn += random.Next(0, 10);
-            }
+            bool isUnique = false;
 
-            // Calculate the check digit
-            int sum = 0;
-            for (int i = 0; i < 12; i++)
+            while (!isUnique)
             {
-                int digit = int.Parse(isbn[i].ToString());
-                sum += (i % 2 == 0) ? digit : digit * 3;
-            }
-            int checkDigit = (10 - sum % 10) % 10;
+                for (int i = 0; i < 7; i++)
+                {
+                    isbn += random.Next(1, 10); // Generate random digits from 1 to 9
+                }
 
-            isbn += checkDigit.ToString();
+                // Calculate the check digit
+                int sum = 0;
+                for (int i = 0; i < 12; i++)
+                {
+                    int digit = int.Parse(isbn[i].ToString());
+                    sum += (i % 2 == 0) ? digit : digit * 3;
+                }
+                int checkDigit = (10 - sum % 10) % 10;
+
+                isbn += checkDigit.ToString();
+
+                // Check if the generated ISBN is unique
+                if (!previousISBNs.Contains(isbn))
+                {
+                    isUnique = true;
+                    previousISBNs.Add(isbn);
+                }
+                else
+                {
+                    isbn = "978"; // Reset the ISBN to generate a new one
+                }
+            }
 
             return isbn;
         }
@@ -226,13 +244,21 @@ namespace Book
             }
             public void ShowGenre()
             {
-                Console.WriteLine("Genre: ");
-                foreach (var book in books.Values)
+                Console.WriteLine("Enter the name of the book: ");
+                string bookName = Console.ReadLine();
+
+                if (books.TryGetValue(bookName, out Book book))
                 {
-                    book.ShowBookInfo();
+                    Console.WriteLine("Book Title: " + book.title);
+                    Console.WriteLine("Genre: " + book.genre);
                     Console.WriteLine("-------------------------");
                 }
+                else
+                {
+                    Console.WriteLine("Book not found.");
+                }
             }
+
 
         }
 
@@ -240,14 +266,14 @@ namespace Book
         {
             static void Main(string[] args)
             {
-                /*test class book
+                
                  Book b1 = new Book();
                  b1.SendNewBookInfo();
                  b1.ShowBookInfo();
                  b1.EditAvabliabiltiyStatus();
                  b1.EditCopiesNumber();
                  b1.ShowBookInfo();
-                 b1.ShowISBN(); */
+                 b1.ShowISBN(); 
                 Catalog c = new Catalog();
                 
 
