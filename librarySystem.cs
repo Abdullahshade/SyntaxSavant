@@ -15,8 +15,8 @@ public class LibrarySystem
 
             private string libraryname;
             double[] fines;
-            string[] catalogs;
-            string[] books;
+            Catalog[] catalogs;
+            Book[] books;
             string email;
         public List<User> users;
         private string usersFilePath="users.txt";
@@ -43,7 +43,7 @@ public class LibrarySystem
         {
             foreach (User user in users)
             {
-                if (user.Name == username && user.Password == password)
+                if (user.Username == username && user.Password == password)
                 {
                     return user;
                 }
@@ -136,7 +136,7 @@ public class LibrarySystem
                 }
             }
 
-            private void SaveUsersToFile()
+            public void SaveUsersToFile()
         {
             int counter = 0;
             try
