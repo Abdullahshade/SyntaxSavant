@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +17,16 @@ namespace UML_Project
 
         public void ManageUserAccounts(List<User> users)
         {
-            Console.WriteLine("All users:");
+            Console.WriteLine("[ID]  user name\t\t\t Role");
+            Console.WriteLine("__________________________________________");
+
+
             foreach (User user in users)
             {
-                Console.WriteLine(user.Id+"]"+user.Name);
+                Console.WriteLine("["+user.Id+"]   "+user.Username+"\t\t\t"+user.Role);
             }
+            Console.WriteLine("__________________________________________");
+
         }
 
         public void SetRole(User userToChange, UserRole newRole)
