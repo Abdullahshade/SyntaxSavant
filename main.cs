@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +19,7 @@ namespace UML_Project
             {
                 if (currentUser == null)
                 {
+                    Console.Clear();
                     // Prompt the user to choose between registering a new user or logging in with an existing user
                     Console.WriteLine("Welcome to the library system!");
                     Console.WriteLine("Do you want to register a new user (1) or log in with an existing user (2)?");
@@ -40,12 +41,18 @@ namespace UML_Project
                         }
                         else
                         {
+
                             Console.WriteLine("Invalid username or password.");
+                            Thread.Sleep(1000);
+
                         }
                     }
                     else
                     {
+
                         Console.WriteLine("Invalid choice.");
+                        Thread.Sleep(1000);
+
                     }
                 }
                 else
@@ -73,6 +80,7 @@ namespace UML_Project
                                 Console.WriteLine("Enter the new role for the user:");
                                 UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
                                 ((Admin)currentUser).SetRole(userToChange, newRole);
+                                librarySystem.SaveUsersToFile();
                             }
                             else
                             {
