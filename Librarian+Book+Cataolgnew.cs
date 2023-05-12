@@ -234,12 +234,12 @@ namespace UML_Project
         }
 
 
-
+    }
 
         public class Librarian
         {
 
-            static List<Book> books = new List<Book>();
+            static  List<Book> books = new List<Book>();
 
             private string[] workSchedule;
             private string emailAddress;
@@ -251,21 +251,21 @@ namespace UML_Project
                 this.emailAddress = emailAddress;
             }
 
-           
+
 
             public void AddNewBook(string title, string author, int publicationYear, string genre, int isbn, int copies)
             {
 
 
 
-               
-                    for (int j = 1; j <= copies ; j++)
-                    {
-                        
-                        Book book = new Book(title, author, publicationYear, genre, isbn , 1);
-                        books.Add(book);
-                    }
-             
+
+                for (int j = 1; j <= copies; j++)
+                {
+
+                    Book book = new Book(title, author, publicationYear, genre, isbn, 1);
+                    books.Add(book);
+                }
+
                 Console.WriteLine("New book added: " + title);
             }
             public void Numberofbooks()
@@ -281,7 +281,7 @@ namespace UML_Project
 
                 string searchTitle = title;
                 Book foundBook = books.Find(book => book.Title == searchTitle);
-              
+
                 if (foundBook != null)
                 {
                     Console.WriteLine("Book found:");
@@ -295,14 +295,12 @@ namespace UML_Project
                 }
 
 
-
-
-
-
-               
             }
 
-            class Program
+        }
+      
+
+    class Program
             {
                 static void Main(string[] args)
                 {
@@ -314,17 +312,17 @@ namespace UML_Project
                     L3.Numberofbooks();
 
                     L1.AddNewBook("Book 2", "Author 2", 2022, "Genre 2", 932587416, 3);
-                    L3.Numberofbooks();
+                   
                     L1.AddNewBook("Book 3", "Author 3", 2000, "Genre 2", 932587416, 9);
-
-                    L1.RemoveBook("Book 1");
+                L3.Numberofbooks();
+                L1.RemoveBook("Book 1");
                     L1.RemoveBook("C++");
                     L3.Numberofbooks();
 
 
                 }
             }
-        }
+        
 
-    }
+    
 }
