@@ -37,6 +37,8 @@ namespace UML_Project
 
                         if (currentUser != null)
                         {
+                            Console.Clear();
+
                             Console.WriteLine("Logged in as " + currentUser.Name);
                         }
                         else
@@ -68,6 +70,9 @@ namespace UML_Project
                         {
                             List<User> users = librarySystem.GetUsers();
                             ((Admin)currentUser).ManageUserAccounts(users);
+                            Console.WriteLine("Press any key to continue.");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                         else if (adminChoice == 2)
                         {
@@ -81,6 +86,10 @@ namespace UML_Project
                                 UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
                                 ((Admin)currentUser).SetRole(userToChange, newRole);
                                 librarySystem.SaveUsersToFile();
+                                Console.WriteLine("Press any key to continue.");
+                                Console.ReadKey();
+                                Console.Clear();
+
                             }
                             else
                             {
