@@ -213,7 +213,13 @@ namespace UML_Project
                 Console.WriteLine("Error saving users to file: " + e.Message);
             }
         }
+        public void DeleteUser(User user)
+        {
+            int id = user.Id;
+            users.RemoveAt(id);
+        }
     }
+
 
   
     public enum UserRole

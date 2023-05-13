@@ -36,6 +36,10 @@ namespace UML_Project
 
             // Update the user list and save it to file
         }
+        public void DeleteUser(LibrarySystem lb,User userToDelete)
+        {
+            lb.DeleteUser(userToDelete);
+        }
 
 
 

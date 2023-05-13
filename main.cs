@@ -64,7 +64,7 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("Do you want to view all users (1), set a user's role (2), or log out (3)?");
+                        Console.WriteLine("Do you want to view all users (1), set a user's role (2),To remove user(3), or log out (4)?");
                         int adminChoice = int.Parse(Console.ReadLine());
 
                         if (adminChoice == 1)
@@ -94,6 +94,24 @@ namespace UML_Project
 
                         }
                         else if (adminChoice == 3)
+                        {
+                            Console.WriteLine("Enter the username of the user to be deleted:");
+                            string username = Console.ReadLine();
+                            User userToDelete = librarySystem.GetUsers().Find(u => u.Username == username);
+
+                            if (userToDelete != null)
+                            {
+                                ((Admin)currentUser).DeleteUser(librarySystem, userToDelete);
+                                librarySystem.SaveUsersToFile();
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("User not found.");
+                            }
+
+                        }
+                        else if (adminChoice == 4)
                         {
                             currentUser = null;
                         }
