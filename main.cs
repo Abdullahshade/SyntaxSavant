@@ -71,9 +71,7 @@ namespace UML_Project
                         {
                             List<User> users = librarySystem.GetUsers();
                             ((Admin)currentUser).ManageUserAccounts(users);
-                            Console.WriteLine("Press any key to continue.");
-                            Console.ReadKey();
-                            Console.Clear();
+
                         }
                         else if (adminChoice == 2)
                         {
@@ -87,15 +85,13 @@ namespace UML_Project
                                 UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
                                 ((Admin)currentUser).SetRole(userToChange, newRole);
                                 librarySystem.SaveUsersToFile();
-                                Console.WriteLine("Press any key to continue.");
-                                Console.ReadKey();
-                                Console.Clear();
 
                             }
                             else
                             {
                                 Console.WriteLine("User not found.");
                             }
+
                         }
                         else if (adminChoice == 3)
                         {
@@ -105,6 +101,9 @@ namespace UML_Project
                         {
                             Console.WriteLine("Invalid choice.");
                         }
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                     else if(currentUser is Librarian)
                     {
@@ -131,9 +130,6 @@ namespace UML_Project
 
                             int copies = Convert.ToInt32(Console.ReadLine());
                             ((Librarian)currentUser).AddNewBook(librarySystem, title,  author,  publicationYear,  genre,  isbn,  copies);
-                            Console.WriteLine("New book added ! Press any key to continue.");
-                            Console.ReadKey();
-                            Console.Clear();
                         }
                         else if (LibrarinChoice == 2)
                         {
@@ -169,12 +165,15 @@ namespace UML_Project
                         {
                             Console.WriteLine("Invalid choice.");
                         }
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        Console.Clear();
 
 
                     }
                     else
                     {
-                        Console.WriteLine("Do you want to log out (1) or do something else (2)?");
+                        Console.WriteLine("Do you want to log out (1), to request borrwoing (2), to Request Reservation(3)");
                         int userChoice = int.Parse(Console.ReadLine());
 
                         if (userChoice == 1)
@@ -184,12 +183,22 @@ namespace UML_Project
                         else if (userChoice == 2)
                         {
                             // Add additional options for normal users here
-                            Console.WriteLine("Nothing else to do for normal users.");
+                            ((Patron)currentUser).RequestBorrowing(librarySystem);
+
+                        }
+                        else if (userChoice == 3)
+                        {
+                            // Add additional options for normal users here
+                            ((Patron)currentUser).RequestReservation(librarySystem);
+
                         }
                         else
                         {
                             Console.WriteLine("Invalid choice.");
                         }
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                 }
             }

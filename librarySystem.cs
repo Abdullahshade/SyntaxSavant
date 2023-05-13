@@ -163,8 +163,8 @@ namespace UML_Project
                         }
                         else
                             {
-                                // Create a regular User object if the user is not an admin
-                                User user = new User(name, username, password, role, int.Parse(id));
+                                // Create a regular User object if the user is not an admin or librarin 
+                                Patron user = new Patron(name, username, password, role, int.Parse(id));
                                 users.Add(user);
                             }
                         usersNumber = int.Parse(id) + 1;

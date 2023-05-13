@@ -149,17 +149,6 @@ namespace UML_Project
         }
         public void SendNewBookInfo(Catalog c)
         {
-            //set title 
-            Console.Write("Enter the new  title of the book : ");
-            this.title = Console.ReadLine();
-            //set author
-            Console.Write("Enter the author of the book : ");
-            this.author = Console.ReadLine();
-            Console.Write("Enter the genre of the book : ");
-            this.genre = Console.ReadLine();
-            this.SetPublicationYear();
-            this.SetCopies();
-            this.availabilitystatus = true;
             c.AddBookToGenre(this);
         }
 
