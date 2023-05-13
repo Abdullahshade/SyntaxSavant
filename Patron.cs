@@ -8,15 +8,18 @@ namespace UML_Project
     {
         string[] contactInformation;
         List<Book> borrowedItems;
+         List<Book> reserveditems;
 
         public Patron(string name, string username, string password, UserRole role, int id):base(name, username,password,role, id)        
         {
             ContactInformation = new string[0];
             BorrowedItems = new List<Book>();
+             Reserveditems = new List<Book>();
         }
 
         public string[] ContactInformation { get => contactInformation; set => contactInformation = value; }
         public List<Book> BorrowedItems { get => borrowedItems; set => borrowedItems = value; }
+        public List<Book> Reserveditems { get => reserveditems; set => reserveditems = value; }
 
         public bool RequestBorrowing(LibrarySystem lb)
         {
@@ -62,7 +65,7 @@ namespace UML_Project
             {
                 if (book.GetAvailabilityStatus() && book.GetCopies() > 0)             // Check availability of copies available for reservation
                 {
-                    BorrowedItems.Add(book);
+                    Reserveditems.Add(book);
 
                     Console.WriteLine("Book reserved successfully.");
                 }
