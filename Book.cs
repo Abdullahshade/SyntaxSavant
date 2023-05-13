@@ -35,7 +35,6 @@ namespace UML_Project
         public string ISBN1 { get => ISBN; set => ISBN = value; }
         public string Genre { get => genre; set => genre = value; }
         public string Title { get => title; set => title = value; }
-
         public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, int copies = 1, bool availabilitystatus = true)
         {
             this.title = title;

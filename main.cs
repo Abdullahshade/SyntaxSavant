@@ -173,7 +173,7 @@ namespace UML_Project
                     }
                     else
                     {
-                        Console.WriteLine("Do you want to log out (1), to request borrwoing (2), to Request Reservation(3)");
+                        Console.WriteLine("Do you want to log out (1), to request borrwoing (2), to Request Reservation(3), View Fines (4)");
                         int userChoice = int.Parse(Console.ReadLine());
 
                         if (userChoice == 1)
@@ -190,6 +190,12 @@ namespace UML_Project
                         {
                             // Add additional options for normal users here
                             ((Patron)currentUser).RequestReservation(librarySystem);
+
+                        }
+                        else if (userChoice == 4)
+                        {
+                            // Add additional options for normal users here
+                            currentUser.ViewFines();
 
                         }
                         else

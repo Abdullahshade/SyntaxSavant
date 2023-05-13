@@ -101,9 +101,9 @@ namespace UML_Project
             return true;
         }
 
-        public void ViewFines(User user)
+        public void ViewFines()
         {
-            Console.WriteLine("Outstanding Fines: {0}", user.Fees);
+            Console.WriteLine("Outstanding Fines: {0}", Fees);
         }
         public void Search()
         {
