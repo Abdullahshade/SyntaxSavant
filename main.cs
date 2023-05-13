@@ -21,7 +21,7 @@ namespace UML_Project
                     Console.Clear();
                     // Prompt the user to choose between registering a new user or logging in with an existing user
                     Console.WriteLine("Welcome to the library system!");
-                    Console.WriteLine("Do you want to register a new user (1) or log in with an existing user (2)?");
+                    Console.WriteLine("[1]register a new user \n[2]log in with an existing user");
                     int choice = int.Parse(Console.ReadLine());
 
                     if (choice == 1)
@@ -64,7 +64,7 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("Do you want to view all users (1), set a user's role (2),To remove user(3), or log out (4)?");
+                        Console.WriteLine("[1]Do you want to view all users\n[2]set a user's role \n[3]To remove user\n[4]log out");
                         int adminChoice = int.Parse(Console.ReadLine());
 
                         if (adminChoice == 1)
@@ -127,7 +127,7 @@ namespace UML_Project
                     {
 
 
-                        Console.WriteLine("Add new Book (1),View number of books (2), search book by title(3),remove book by name(4), logout(5)");
+                        Console.WriteLine("[1]Add new Book\n[2]View number of books \n[3]search book by title\n[4]remove book by name\n[5]logout");
                         int LibrarinChoice = int.Parse(Console.ReadLine());
 
                         if (LibrarinChoice == 1)
@@ -191,7 +191,7 @@ namespace UML_Project
                     }
                     else
                     {
-                        Console.WriteLine("Do you want to log out (1), to request borrwoing (2), to Request Reservation(3), View Fines (4)");
+                        Console.WriteLine("[1]log out\n[2]to request borrwoing \n[3]Request Reservation\n[4]View Fines ");
                         int userChoice = int.Parse(Console.ReadLine());
 
                         if (userChoice == 1)
