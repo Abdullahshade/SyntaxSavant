@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace UML_Project
 {
-    public class Librarian
+    public class Librarian : User
     {
 
         static List<Book> books = new List<Book>();
@@ -14,12 +12,15 @@ namespace UML_Project
         private string[] workSchedule;
         private string emailAddress;
 
-        public Librarian(string[] workSchedule = null, string emailAddress = "")
+        public Librarian(string name, string username, string password, UserRole role, int id, string emailAddress = "", string[] workSchedule = null) : base(name, username, password, role, id)
         {
 
             this.workSchedule = workSchedule ?? new string[0];
             this.emailAddress = emailAddress;
         }
+
+        public string[] WorkSchedule { get => workSchedule; set => workSchedule = value; }
+        public string EmailAddress { get => emailAddress; set => emailAddress = value; }
 
         public static Book FindBookByTitle(string title)
         {

@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace UML_Project
 {
-    class Patron
+    public class Patron : User
     {
-        string[] ContactInformation;
-        List<Book> BorrowedItems;
+        string[] contactInformation;
+        List<Book> borrowedItems;
 
-        public Patron()
+        public Patron(string name, string username, string password, UserRole role, int id):base(name, username,password,role, id)        
         {
             ContactInformation = new string[0];
             BorrowedItems = new List<Book>();
         }
+
+        public string[] ContactInformation { get => contactInformation; set => contactInformation = value; }
+        public List<Book> BorrowedItems { get => borrowedItems; set => borrowedItems = value; }
 
         public bool RequestBorrowing()
         {
