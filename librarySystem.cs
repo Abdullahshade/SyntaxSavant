@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Xml.Linq;
 using UML_Project;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace UML_Project
 {
@@ -16,8 +17,12 @@ public class LibrarySystem
             private string libraryname;
             double[] fines;
             Catalog[] catalogs;
-            Book[] books;
-            string email;
+            //Book[] books;
+        static List<Book> books = new List<Book>();
+        
+
+        string email;
+        int usersNumber=0;
         public List<User> users;
         private string usersFilePath="users.txt";
 
@@ -31,14 +36,6 @@ public class LibrarySystem
             {
                 return users;
             }
-
-            public void Register(string name, string username, string password, UserRole role,int id)
-        {
-            User newUser = new User(name, username, password, role,id);
-            users.Add(newUser);
-            SaveUsersToFile();
-        }
-
         public User Login(string username, string password)
         {
             foreach (User user in users)
@@ -79,9 +76,9 @@ public class LibrarySystem
             } while (!User.IsValidPassword(password));
 
             
-        User user = new User(name, username, password, UserRole.NormalUser,9999);
+        User user = new User(name, username, password, UserRole.Patron,usersNumber);
                 users.Add(user);
-
+            usersNumber++;
                 Console.WriteLine("User registered successfully.");
             SaveUsersToFile();
             }
@@ -96,8 +93,35 @@ public class LibrarySystem
                 return Login(username, password);
             }
 
+        public Book FindBookByTitle(string title)
+        {
 
-            private void LoadUsersFromFile()
+            foreach (Book book in books)
+            {
+                if (book.Title == title)
+                {
+                    return book;
+                }
+
+            }
+            return null;
+        }
+        public void AddBookToBooks(Book newBook)
+        {
+            books.Add(newBook);
+        }
+        public int NumberOfBooks()
+        {
+            return books.Count();
+        }
+        public void DeleteBook(Book book)
+        {
+            books.Remove(book);
+
+        }
+
+
+        private void LoadUsersFromFile()
             {
                 if (File.Exists(usersFilePath))
                 {
@@ -127,6 +151,7 @@ public class LibrarySystem
                                 User user = new User(name, username, password, role, int.Parse(id));
                                 users.Add(user);
                             }
+                        usersNumber = int.Parse(id) + 1;
                         }
                     }
                     catch (Exception ex)
@@ -158,10 +183,12 @@ public class LibrarySystem
         }
     }
 
+  
     public enum UserRole
     {
-        NormalUser,
-        Admin
+        Patron,
+        Admin,
+        Librarian
     }
 
      

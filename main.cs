@@ -29,6 +29,8 @@ namespace UML_Project
                     {
                         // Register a new user
                         librarySystem.Register();
+                        Thread.Sleep(1000);
+
                     }
                     else if (choice == 2)
                     {

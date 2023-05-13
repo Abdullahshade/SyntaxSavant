@@ -18,13 +18,13 @@ namespace UML_Project
         public string[] ContactInformation { get => contactInformation; set => contactInformation = value; }
         public List<Book> BorrowedItems { get => borrowedItems; set => borrowedItems = value; }
 
-        public bool RequestBorrowing()
+        public bool RequestBorrowing(LibrarySystem lb)
         {
             Console.Write("Enter the title of the book you want to borrow: ");
             string title = Console.ReadLine();
 
 
-            Book book = Librarian.FindBookByTitle(title);
+            Book book = Librarian.FindBookByTitle(lb,title);
             if (book != null)
             {
 
@@ -51,13 +51,13 @@ namespace UML_Project
         }
 
 
-        public void RequestReservation()
+        public void RequestReservation(LibrarySystem lb)
         {
             Console.Write("Enter the title of the book you want to reserve: ");
             string title = Console.ReadLine();
 
             // Check if a book is available in the library by title
-            Book book = Librarian.FindBookByTitle(title);
+            Book book = Librarian.FindBookByTitle(lb,title);
             if (book != null)
             {
                 if (book.GetAvailabilityStatus() && book.GetCopies() > 0)             // Check availability of copies available for reservation
