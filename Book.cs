@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UML_Project
 {
-    class Book
+    public class Book
     {
         string title;
         string author;

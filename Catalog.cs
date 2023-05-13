@@ -3,7 +3,7 @@ using System;
 
 namespace UML_Project
 {
-    class Catalog
+    public class Catalog
     {
         Dictionary<string, Book> Books = new Dictionary<string, Book>();
 
