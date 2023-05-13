@@ -9,17 +9,17 @@ namespace UML_Project
 
 
         private string[] workSchedule;
-        private string emailAddress;
+       // private string emailAddress;
 
-        public Librarian(string name, string username, string password, UserRole role, int id, string emailAddress = "", string[] workSchedule = null) : base(name, username, password, role, id)
+        public Librarian(string name, string username, string password, int id, string[] workSchedule = null) : base(name, username, password, UserRole.Librarian, id)
         {
             
             this.workSchedule = workSchedule ?? new string[0];
-            this.emailAddress = emailAddress;
+            //this.emailAddress = emailAddress;
         }
 
         public string[] WorkSchedule { get => workSchedule; set => workSchedule = value; }
-        public string EmailAddress { get => emailAddress; set => emailAddress = value; }
+        //public string EmailAddress { get => emailAddress; set => emailAddress = value; }
 
         public static Book FindBookByTitle(LibrarySystem lb,string title)
         {

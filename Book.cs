@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace UML_Project
 {
+    [Serializable]
+
     public class Book
     {
         string title;
@@ -45,7 +47,7 @@ namespace UML_Project
             this.copies = copies;
         }
 
-        public string GenerateISBN()
+         string GenerateISBN()
         {
             Random random = new Random();
             string isbn = "978";

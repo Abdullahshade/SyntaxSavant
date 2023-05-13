@@ -14,7 +14,6 @@ namespace UML_Project
         {
             LibrarySystem librarySystem = new LibrarySystem("users.txt");
             User currentUser = null;
-
             while (true)
             {
                 if (currentUser == null)
@@ -106,6 +105,72 @@ namespace UML_Project
                         {
                             Console.WriteLine("Invalid choice.");
                         }
+                    }
+                    else if(currentUser is Librarian)
+                    {
+
+
+                        Console.WriteLine("Add new Book (1),View number of books (2), search book by title(3),remove book by name(4), logout(5)");
+                        int LibrarinChoice = int.Parse(Console.ReadLine());
+
+                        if (LibrarinChoice == 1)
+                        {
+                            Console.Write("Enter book Title:");
+                            string title = Console.ReadLine();
+                            Console.Write("Enter book author:");
+                            string author= Console.ReadLine();
+                            Console.Write("Enter year of publication:");
+                            int publicationYear= Convert.ToInt32(Console.ReadLine());
+                            Console.Write("Enter genre:");
+
+                            string genre = Console.ReadLine();
+                            Console.Write("Enter isbn:");
+
+                            int isbn = Convert.ToInt32(Console.ReadLine());
+                            Console.Write("Enter number of copies :");
+
+                            int copies = Convert.ToInt32(Console.ReadLine());
+                            ((Librarian)currentUser).AddNewBook(librarySystem, title,  author,  publicationYear,  genre,  isbn,  copies);
+                            Console.WriteLine("New book added ! Press any key to continue.");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        else if (LibrarinChoice == 2)
+                        {
+                        
+                           ((Librarian)currentUser).Numberofbooks(librarySystem);
+                        }
+                        else if(LibrarinChoice == 3)
+                        {
+                            Console.Write("Enter book Title:");
+                            string title = Console.ReadLine();
+                            Book FindBook = Librarian.FindBookByTitle(librarySystem,title);
+                            if (FindBook != null)
+                            {
+                                Console.WriteLine("Book Found");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Book not found! ");
+                            }
+                        }
+                        else if (LibrarinChoice == 4)
+                        {
+                            Console.Write("Enter book Title:");
+                            string title = Console.ReadLine();
+                            ((Librarian)currentUser).RemoveBook(librarySystem, title);
+
+                        }
+                        else if (LibrarinChoice == 5)
+                        {
+                            currentUser = null;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid choice.");
+                        }
+
+
                     }
                     else
                     {

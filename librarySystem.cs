@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 using UML_Project;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace UML_Project
 {
 
+    [Serializable]
 
-public class LibrarySystem
+    public class LibrarySystem
     {
 
             private string libraryname;
@@ -19,6 +20,7 @@ public class LibrarySystem
             Catalog[] catalogs;
             //Book[] books;
         static List<Book> books = new List<Book>();
+        Catalog catalog  = new Catalog();
         
 
         string email;
@@ -31,6 +33,7 @@ public class LibrarySystem
             this.usersFilePath = usersFilePath;
             users = new List<User>();
             LoadUsersFromFile();
+            LoadBooksFromFile();
         }
             public List<User> GetUsers()
             {
@@ -109,6 +112,8 @@ public class LibrarySystem
         public void AddBookToBooks(Book newBook)
         {
             books.Add(newBook);
+            newBook.SendNewBookInfo(catalog);
+            SaveBooksFromFile();
         }
         public int NumberOfBooks()
         {
@@ -116,7 +121,13 @@ public class LibrarySystem
         }
         public void DeleteBook(Book book)
         {
-            books.Remove(book);
+            
+                books.Remove(book);
+                catalog.RemoveBookFromGenre(book);
+            SaveBooksFromFile();
+            
+            
+                
 
         }
 
@@ -144,8 +155,13 @@ public class LibrarySystem
                                 // Create an Admin object if the user is an admin
                                 Admin admin = new Admin(name, username, password, int.Parse(id));
                                 users.Add(admin);
-                            }
-                            else
+                            }else if (role == UserRole.Librarian)
+                        {
+                            // Create an Admin object if the user is an admin
+                            Librarian librarian= new Librarian(name, username, password, int.Parse(id));
+                            users.Add(librarian);
+                        }
+                        else
                             {
                                 // Create a regular User object if the user is not an admin
                                 User user = new User(name, username, password, role, int.Parse(id));
@@ -160,8 +176,23 @@ public class LibrarySystem
                     }
                 }
             }
+        public void SaveBooksFromFile()
+        {
+            FileStream fileStream = new FileStream("books.dat", FileMode.OpenOrCreate);
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            binaryFormatter.Serialize(fileStream, books);
+            fileStream.Close();
+        }
 
-            public void SaveUsersToFile()
+        public void LoadBooksFromFile()
+        {
+            FileStream fileStream = new FileStream("books.dat", FileMode.Open);
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+             books = (List<Book>)binaryFormatter.Deserialize(fileStream);
+            fileStream.Close();
+        }
+        public void SaveUsersToFile()
         {
             int counter = 0;
             try
@@ -176,6 +207,7 @@ public class LibrarySystem
                     }
                 }
             }
+
             catch (Exception e)
             {
                 Console.WriteLine("Error saving users to file: " + e.Message);
