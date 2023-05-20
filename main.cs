@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UML_Project;
 
 namespace UML_Project
 {
@@ -191,7 +192,7 @@ namespace UML_Project
                     }
                     else
                     {
-                        Console.WriteLine("[1]log out\n[2]to request borrwoing \n[3]Request Reservation\n[4]View Fines ");
+                        Console.WriteLine("[1]log out\n[2]to request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books ");
                         int userChoice = int.Parse(Console.ReadLine());
 
                         if (userChoice == 1)
@@ -215,6 +216,11 @@ namespace UML_Project
                             // Add additional options for normal users here
                             currentUser.ViewFines();
 
+                        }
+                        else if (userChoice == 5)
+                        {
+                            // new
+                            librarySystem.ListBooks();
                         }
                         else
                         {

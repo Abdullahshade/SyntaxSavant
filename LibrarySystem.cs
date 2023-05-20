@@ -5,6 +5,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Linq;
+using UML_Project;
 
 namespace UML_Project
 {
@@ -217,6 +219,17 @@ namespace UML_Project
         {
             int id = user.Id;
             users.RemoveAt(id);
+        
+        }
+
+        //new
+        public void ListBooks() { 
+        
+            foreach (Book book in books)
+            {
+                book.ShowBookInfo();
+                Console.WriteLine("******************");
+            }
         }
     }
 
@@ -228,5 +241,9 @@ namespace UML_Project
         Admin,
         Librarian
     }
+
+
+
+
 
 }
