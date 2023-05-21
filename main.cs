@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using UML_Project;
 
@@ -65,7 +64,7 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("[1]Do you want to view all users\n[2]set a user's role \n[3]To remove user\n[4]log out");
+                        Console.WriteLine("[1]Do you want to view all users\n[2]set a user's role \n[3]To remove user\n[4]modify Users\n[5]log out");
                         int adminChoice = int.Parse(Console.ReadLine());
 
                         if (adminChoice == 1)
@@ -92,7 +91,7 @@ namespace UML_Project
                             {
                                 Console.WriteLine("User not found.");
                             }
-
+                            librarySystem.LoadUsersFromFile();
                         }
                         else if (adminChoice == 3)
                         {
@@ -110,9 +109,25 @@ namespace UML_Project
                             {
                                 Console.WriteLine("User not found.");
                             }
-
+                            librarySystem.LoadUsersFromFile();
                         }
                         else if (adminChoice == 4)
+                        {
+                            Console.WriteLine("Enter the username of the user to be modified:");
+                            string username = Console.ReadLine();
+                            User user2Modify = librarySystem.GetUsers().Find(u => u.Username == username);
+
+                            if (user2Modify != null)
+                            {
+                                ((Admin)currentUser).modifyingUsers(librarySystem, user2Modify);
+                            }
+                            else
+                            {
+                                Console.WriteLine("User not found.");
+                            }
+                            librarySystem.LoadUsersFromFile();
+                        }
+                        else if (adminChoice == 5)
                         {
                             currentUser = null;
                         }
@@ -124,7 +139,7 @@ namespace UML_Project
                         Console.ReadKey();
                         Console.Clear();
                     }
-                    else if (currentUser is Librarian)
+                    else if(currentUser is Librarian)
                     {
 
 
@@ -136,9 +151,9 @@ namespace UML_Project
                             Console.Write("Enter book Title:");
                             string title = Console.ReadLine();
                             Console.Write("Enter book author:");
-                            string author = Console.ReadLine();
+                            string author= Console.ReadLine();
                             Console.Write("Enter year of publication:");
-                            int publicationYear = Convert.ToInt32(Console.ReadLine());
+                            int publicationYear= Convert.ToInt32(Console.ReadLine());
                             Console.Write("Enter genre:");
 
                             string genre = Console.ReadLine();
@@ -148,18 +163,18 @@ namespace UML_Project
                             Console.Write("Enter number of copies :");
 
                             int copies = Convert.ToInt32(Console.ReadLine());
-                            ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre, isbn, copies);
+                            ((Librarian)currentUser).AddNewBook(librarySystem, title,  author,  publicationYear,  genre,  isbn,  copies);
                         }
                         else if (LibrarinChoice == 2)
                         {
-
-                            ((Librarian)currentUser).Numberofbooks(librarySystem);
+                        
+                           ((Librarian)currentUser).Numberofbooks(librarySystem);
                         }
-                        else if (LibrarinChoice == 3)
+                        else if(LibrarinChoice == 3)
                         {
                             Console.Write("Enter book Title:");
                             string title = Console.ReadLine();
-                            Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
+                            Book FindBook = Librarian.FindBookByTitle(librarySystem,title);
                             if (FindBook != null)
                             {
                                 Console.WriteLine("Book Found");

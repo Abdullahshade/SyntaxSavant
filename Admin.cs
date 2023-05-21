@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using UML_Project;
@@ -39,6 +40,30 @@ namespace UML_Project
         public void DeleteUser(LibrarySystem lb,User userToDelete)
         {
             lb.DeleteUser(userToDelete);
+        }
+
+        public void modifyingUsers(LibrarySystem lb, User userToModify)
+        {
+            Console.WriteLine("[0]To change username\n[1]To change password");
+            int readL = Convert.ToInt32(Console.ReadLine());
+            if (readL == 0)
+            {
+                Console.WriteLine("Enter new username");
+                string newUser = Console.ReadLine();
+                userToModify.Username = newUser;
+
+            } else if (readL == 1)
+            {
+                Console.WriteLine("Enter new password");
+                string newPass = Console.ReadLine();
+                userToModify.Password = newPass;
+
+            }
+            else
+            {
+                Console.WriteLine("wrong input");
+            }
+            lb.SaveUsersToFile();
         }
 
 

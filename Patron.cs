@@ -8,13 +8,13 @@ namespace UML_Project
     {
         string[] contactInformation;
         List<Book> borrowedItems;
-         List<Book> reserveditems;
+        List<Book> reserveditems;
 
-        public Patron(string name, string username, string password, UserRole role, int id):base(name, username,password,role, id)        
+        public Patron(string name, string username, string password, UserRole role, int id) : base(name, username, password, role, id)
         {
             ContactInformation = new string[0];
             BorrowedItems = new List<Book>();
-             Reserveditems = new List<Book>();
+            Reserveditems = new List<Book>();
         }
 
         public string[] ContactInformation { get => contactInformation; set => contactInformation = value; }
@@ -27,7 +27,7 @@ namespace UML_Project
             string title = Console.ReadLine();
 
 
-            Book book = Librarian.FindBookByTitle(lb,title);
+            Book book = Librarian.FindBookByTitle(lb, title);
             if (book != null)
             {
 
@@ -60,7 +60,7 @@ namespace UML_Project
             string title = Console.ReadLine();
 
             // Check if a book is available in the library by title
-            Book book = Librarian.FindBookByTitle(lb,title);
+            Book book = Librarian.FindBookByTitle(lb, title);
             if (book != null)
             {
                 if (book.GetAvailabilityStatus() && book.GetCopies() > 0)             // Check availability of copies available for reservation
