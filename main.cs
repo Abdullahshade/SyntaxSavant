@@ -20,42 +20,49 @@ namespace UML_Project
                     // Prompt the user to choose between registering a new user or logging in with an existing user
                     Console.WriteLine("Welcome to the library system!");
                     Console.WriteLine("[1]register a new user \n[2]log in with an existing user");
-                    int choice = int.Parse(Console.ReadLine());
 
-                    if (choice == 1)
-                    {
-                        // Register a new user
-                        librarySystem.Register();
-                        Thread.Sleep(1000);
+                    try {
+                        int choice = int.Parse(Console.ReadLine());
 
-                    }
-                    else if (choice == 2)
-                    {
-                        // Log in with an existing user
-                        currentUser = librarySystem.Login();
-
-                        if (currentUser != null)
+                        if (choice == 1)
                         {
-                            Console.Clear();
+                            // Register a new user
+                            librarySystem.Register();
+                            Thread.Sleep(1000);
 
-                            Console.WriteLine("Logged in as " + currentUser.Name);
+                        }
+                        else if (choice == 2)
+                        {
+                            // Log in with an existing user
+                            currentUser = librarySystem.Login();
+
+                            if (currentUser != null)
+                            {
+                                Console.Clear();
+
+                                Console.WriteLine("Logged in as " + currentUser.Name);
+                            }
+                            else
+                            {
+
+                                Console.WriteLine("Invalid username or password.");
+                                Thread.Sleep(1000);
+
+                            }
                         }
                         else
                         {
 
-                            Console.WriteLine("Invalid username or password.");
+                            Console.WriteLine("Invalid choice.");
                             Thread.Sleep(1000);
 
                         }
                     }
-                    else
-                    {
-
-                        Console.WriteLine("Invalid choice.");
+                    catch (FormatException e) {
+                        Console.WriteLine("choice cannot be null! ");
                         Thread.Sleep(1000);
-
                     }
-                }
+                    }
                 else
                 {
                     // User is logged in
