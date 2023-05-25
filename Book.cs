@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace UML_Project
 {
@@ -46,7 +44,7 @@ namespace UML_Project
             this.copies = copies;
         }
 
-         string GenerateISBN()
+        string GenerateISBN()
         {
             Random random = new Random();
             string isbn = "978";
@@ -86,7 +84,6 @@ namespace UML_Project
         }
         public void ShowBookInfo()
         {
-
 
             Console.WriteLine("Title: " + this.title);
             Console.WriteLine("Author: " + this.author);

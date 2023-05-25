@@ -1,12 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Linq;
-using UML_Project;
-using static System.Reflection.Metadata.BlobBuilder;
+
 
 namespace UML_Project
 {
@@ -16,18 +13,19 @@ namespace UML_Project
     public class LibrarySystem
     {
 
-            private string libraryname;
-            double[] fines;
-            Catalog[] catalogs;
-            //Book[] books;
+        private string libraryname;
+        double[] fines;
+        Catalog[] catalogs;
+        //Book[] books;
         static List<Book> books = new List<Book>();
-        Catalog catalog  = new Catalog();
-        
+        Catalog catalog = new Catalog();
 
-        string email;
-        int usersNumber=0;
+
+        int usersNumber = 1;
         public List<User> users;
-        private string usersFilePath="users.txt";
+        private string usersFilePath = "users.txt";
+
+        public int UsersNumber { get => usersNumber; set => usersNumber = value; }
 
         public LibrarySystem(string usersFilePath)
         {
@@ -36,10 +34,10 @@ namespace UML_Project
             LoadUsersFromFile();
             LoadBooksFromFile();
         }
-            public List<User> GetUsers()
-            {
-                return users;
-            }
+        public List<User> GetUsers()
+        {
+            return users;
+        }
         public User Login(string username, string password)
         {
             foreach (User user in users)
@@ -56,46 +54,53 @@ namespace UML_Project
 
         public void Register()
         {
-            string name, username, password;
+            string name, username, password, contactInformation;
 
             // Get name
             do
             {
                 Console.Write("Enter your name: ");
                 name = Console.ReadLine();
-            } while (!User.IsValidName(name));
+            } while (!IsValidName(name));
 
             // Get username
             do
             {
                 Console.Write("Enter your username: ");
                 username = Console.ReadLine();
-            } while (!User.IsValidUsername(username));
+            } while (!IsValidUsername(username));
 
             // Get password
             do
             {
                 Console.Write("Enter your password: ");
                 password = Console.ReadLine();
-            } while (!User.IsValidPassword(password));
+            } while (!IsValidPassword(password));
 
-            
-        User user = new User(name, username, password, UserRole.Patron,usersNumber);
-                users.Add(user);
-            usersNumber++;
-                Console.WriteLine("User registered successfully.");
-            SaveUsersToFile();
-            }
-
-            public User Login()
+            // Get contact Information
+            do
             {
-                Console.WriteLine("Enter your username:");
-                string username = Console.ReadLine();
-                Console.WriteLine("Enter your password:");
-                string password = Console.ReadLine();
+                Console.Write("Enter your phone number: ");
+                contactInformation = Console.ReadLine();    
+            } while (!IsValidContactInformation(contactInformation));
 
-                return Login(username, password);
-            }
+
+            User user = new Patron(name, username, password, contactInformation, UserRole.Patron, UsersNumber);
+            users.Add(user);
+            UsersNumber++;
+            Console.WriteLine("User registered successfully.");
+            SaveUsersToFile();
+        }
+
+        public User Login()
+        {
+            Console.WriteLine("Enter your username:");
+            string username = Console.ReadLine();
+            Console.WriteLine("Enter your password:");
+            string password = Console.ReadLine();
+
+            return Login(username, password);
+        }
 
         public Book FindBookByTitle(string title)
         {
@@ -114,7 +119,7 @@ namespace UML_Project
         {
             books.Add(newBook);
             newBook.SendNewBookInfo(catalog);
-            SaveBooksFromFile();
+            SaveBooksToFile();
         }
         public int NumberOfBooks()
         {
@@ -122,63 +127,105 @@ namespace UML_Project
         }
         public void DeleteBook(Book book)
         {
-            
-                books.Remove(book);
-                catalog.RemoveBookFromGenre(book);
-            SaveBooksFromFile();
-            
-            
-                
 
+            books.Remove(book);
+            catalog.RemoveBookFromGenre(book);
+            SaveBooksToFile();
         }
 
-
         public void LoadUsersFromFile()
-            {
+        {
             users.Clear();
-                if (File.Exists(usersFilePath))
+            if (File.Exists(usersFilePath))
+            {
+                try
                 {
-                    try
-                    {
-                        string[] lines = File.ReadAllLines(usersFilePath);
-                        foreach (string line in lines)
-                        {
-                        Console.Write("Done");
-                            string[] parts = line.Split(',');
-                            string name = parts[0];
-                            string username = parts[1];
-                            string password = parts[2];
+                    string[] lines = File.ReadAllLines(usersFilePath);
+                    int counter = 1;
 
-                        UserRole role = (UserRole)Enum.Parse(typeof(UserRole), parts[3]);
-                        string id = parts[4];
+                    foreach (string line in lines)
+                    {
+                        Console.Write("Done");
+                        string[] parts = line.Split(',');
+                        UserRole role = (UserRole)Enum.Parse(typeof(UserRole), parts[0]);
+                        
 
                         if (role == UserRole.Admin)
-                            {
-                                // Create an Admin object if the user is an admin
-                                Admin admin = new Admin(name, username, password, int.Parse(id));
-                                users.Add(admin);
-                            }else if (role == UserRole.Librarian)
                         {
                             // Create an Admin object if the user is an admin
-                            Librarian librarian= new Librarian(name, username, password, int.Parse(id));
+                            string name = parts[1];
+                            string username = parts[2];
+                            string password = parts[3];
+                            string id = parts[4];
+                            Admin admin = new Admin(name, username, password, int.Parse(id));
+                            users.Add(admin);
+                            counter++;
+                        }
+                        else if (role == UserRole.Librarian)
+                        {
+                            // Create a Librarian object if the user is a Librarian
+                            string name = parts[1];
+                            string username = parts[2];
+                            string password = parts[3];
+                            string id = parts[4];
+                            Librarian librarian = new Librarian(name, username, password, int.Parse(id));
                             users.Add(librarian);
+                            counter++;
                         }
-                        else
-                            {
-                                // Create a regular User object if the user is not an admin or librarin 
-                                Patron user = new Patron(name, username, password, role, int.Parse(id));
-                                users.Add(user);
-                            }
-                        usersNumber = int.Parse(id) + 1;
+                        else if (role == UserRole.Patron) 
+                        {
+                            // Create a regular User object if the user is not an admin or librarin 
+                            string name = parts[1];
+                            string username = parts[2];
+                            string password = parts[3];
+                            string id = parts[4];
+                            string contactInformation = parts[5];
+        
+                            Patron patron = new Patron(name, username, password, contactInformation, role, int.Parse(id));
+                            users.Add(patron);
+                            counter++;
                         }
+                        UsersNumber = counter;
                     }
-                    catch (Exception ex)
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error loading users from file: " + ex.Message);
+                }
+            }
+        }
+        public void SaveUsersToFile()
+        {
+            int counter = 1;
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(usersFilePath))
+                {
+                    foreach (User user in users)
                     {
-                        Console.WriteLine("Error loading users from file: " + ex.Message);
+                        if (user.Role == UserRole.Admin || user.Role == UserRole.Librarian)
+                        {
+                            string line = string.Join(",", user.Role.ToString(), user.Name, user.Username, user.Password, counter);
+                            writer.WriteLine(line);
+                            counter++;
+                        }
+                        else if (user.Role == UserRole.Patron)
+                        {
+                            string contactInformation = ((Patron)user).ContactInformation;
+                            string line = string.Join(",", user.Role.ToString(), user.Name, user.Username, user.Password, counter, contactInformation);
+                            writer.WriteLine(line);
+                            counter++;
+                        }
                     }
                 }
             }
-        public void SaveBooksFromFile()
+            catch (Exception e)
+            {
+                Console.WriteLine("Error saving users to file: " + e.Message);
+            }
+        }
+
+        public void SaveBooksToFile()
         {
             FileStream fileStream = new FileStream("books.dat", FileMode.OpenOrCreate);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -190,8 +237,9 @@ namespace UML_Project
 
             foreach (Book book in books)
             {
+                Console.WriteLine("--------------------------------");
                 book.ShowBookInfo();
-                Console.WriteLine("******************");
+                Console.WriteLine("--------------------------------\n");
             }
         }
         public void LoadBooksFromFile()
@@ -199,37 +247,104 @@ namespace UML_Project
             FileStream fileStream = new FileStream("books.dat", FileMode.Open);
 
             BinaryFormatter binaryFormatter = new BinaryFormatter();
-             books = (List<Book>)binaryFormatter.Deserialize(fileStream);
+            books = (List<Book>)binaryFormatter.Deserialize(fileStream);
             fileStream.Close();
         }
-        public void SaveUsersToFile()
-        {
-            int counter = 0;
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(usersFilePath))
-                {
-                    foreach (User user in users)
-                    {
-                        string line = string.Join(",", user.Name, user.Username, user.Password, user.Role.ToString(),counter);
-                        writer.WriteLine(line);
-                        counter++;
-                    }
-                }
-            }
 
-            catch (Exception e)
-            {
-                Console.WriteLine("Error saving users to file: " + e.Message);
-            }
-        }
+            
         public void DeleteUser(User user)
         {
             int id = user.Id;
             users.RemoveAt(id);
         }
+
+        public static bool IsValidName(string name)
+        {
+            // Name should not be empty and should contain only alphabets
+            if (string.IsNullOrEmpty(name) || !name.All(char.IsLetter))
+            {
+                Console.WriteLine("Invalid name. Please enter a valid name containing only alphabets.");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsValidUsername(string username)
+        {
+            // Username should not be empty and should contain only alphabets and digits
+            if (string.IsNullOrEmpty(username) || !username.All(char.IsLetterOrDigit))
+            {
+                Console.WriteLine("Invalid username. Please enter a valid username containing only alphabets and digits.");
+                return false;
+            }
+
+            // Check if username is unique
+
+            if (!IsUsernameUnique(username))
+            {
+                Console.WriteLine("Username already exists. Please enter a unique username.");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsValidPassword(string password)
+        {
+            // Password should not be empty and should be at least 8 characters long
+            if (string.IsNullOrEmpty(password) || password.Length < 8)
+            {
+                Console.WriteLine("Invalid password. Please enter a password that is at least 8 characters long.");
+                return false;
+            }
+            if (!IsPasswordUnique(password))
+            {
+                Console.WriteLine("Password isn't unique. Please enter a unique password.");
+                return false;
+            }
+            
+            return true;
+        }
+        public static bool IsValidContactInformation(string contactInformation)
+        {
+            // To check if phone number is valid and correct
+            if (string.IsNullOrEmpty(contactInformation) || contactInformation.Length != 10 || !contactInformation.All(char.IsDigit))
+            {
+                Console.WriteLine($"{contactInformation} is not a valid phone number.");
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsPasswordUnique(string password)
+        {
+            // To check if password is unique
+            User user = users.Find(x => x.Password == password);
+            if(user == null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsUsernameUnique(string username)
+        {
+            // To check if Username is taken
+            User user = users.Find(u => u.Username == username);
+            if (user == null)
+            {
+                return true;
+            }
+            
+            return false;
+        }
     }
-    
+
+
+        
+
 
 
 
@@ -240,8 +355,8 @@ namespace UML_Project
         Librarian
     }
 
-     
-       
 
-   
+
+
+
 }

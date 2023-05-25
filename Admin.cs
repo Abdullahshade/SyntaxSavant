@@ -1,10 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using UML_Project;
+
+
 
 namespace UML_Project
 {
@@ -12,7 +9,7 @@ namespace UML_Project
     {
         private string workschedule;
 
-        public Admin(string name, string username, string password, int id) : base(name, username,password , UserRole.Admin , id)
+        public Admin(string name, string username, string password, int id) : base(name, username, password, UserRole.Admin, id)
         {
         }
 
@@ -24,7 +21,7 @@ namespace UML_Project
 
             foreach (User user in users)
             {
-                Console.WriteLine("["+user.Id+"]   "+user.Username+"\t\t\t"+user.Role);
+                Console.WriteLine("[" + user.Id + "]   " + user.Username + "\t\t\t" + user.Role);
             }
             Console.WriteLine("__________________________________________");
 
@@ -37,7 +34,7 @@ namespace UML_Project
 
             // Update the user list and save it to file
         }
-        public void DeleteUser(LibrarySystem lb,User userToDelete)
+        public void DeleteUser(LibrarySystem lb, User userToDelete)
         {
             lb.DeleteUser(userToDelete);
         }
@@ -52,7 +49,8 @@ namespace UML_Project
                 string newUser = Console.ReadLine();
                 userToModify.Username = newUser;
 
-            } else if (readL == 1)
+            }
+            else if (readL == 1)
             {
                 Console.WriteLine("Enter new password");
                 string newPass = Console.ReadLine();
@@ -65,10 +63,6 @@ namespace UML_Project
             }
             lb.SaveUsersToFile();
         }
-
-
-
-
     }
 
 }

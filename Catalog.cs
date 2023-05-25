@@ -14,7 +14,7 @@ namespace UML_Project
         }
         public void RemoveBookFromGenre(Book book)
         {
-            
+
 
             Books.Remove(book.ISBN1);
         }

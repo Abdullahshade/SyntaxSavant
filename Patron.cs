@@ -6,18 +6,18 @@ namespace UML_Project
 {
     public class Patron : User
     {
-        string[] contactInformation;
+        string contactInformation;
         List<Book> borrowedItems;
         List<Book> reserveditems;
 
-        public Patron(string name, string username, string password, UserRole role, int id) : base(name, username, password, role, id)
+        public Patron(string name, string username, string password, string contactInformation, UserRole role, int id) : base(name, username, password, role, id)
         {
-            ContactInformation = new string[0];
+            ContactInformation = contactInformation;
             BorrowedItems = new List<Book>();
             Reserveditems = new List<Book>();
         }
 
-        public string[] ContactInformation { get => contactInformation; set => contactInformation = value; }
+        public string ContactInformation { get => contactInformation; set => contactInformation = value; }
         public List<Book> BorrowedItems { get => borrowedItems; set => borrowedItems = value; }
         public List<Book> Reserveditems { get => reserveditems; set => reserveditems = value; }
 
@@ -36,7 +36,7 @@ namespace UML_Project
                     int cout = book.GetCopies();
                     BorrowedItems.Add(book);
                     book.SetCopies(--cout);
-                    lb.SaveBooksFromFile();
+                    lb.SaveBooksToFile();
                     Console.WriteLine("Book borrowed successfully.");
                     return true;
                 }

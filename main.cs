@@ -1,9 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UML_Project;
+using System.Threading;
+
 
 namespace UML_Project
 {
@@ -83,6 +81,7 @@ namespace UML_Project
                             {
                                 Console.WriteLine("Enter the new role for the user:");
                                 UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
+
                                 ((Admin)currentUser).SetRole(userToChange, newRole);
                                 librarySystem.SaveUsersToFile();
 
@@ -139,7 +138,7 @@ namespace UML_Project
                         Console.ReadKey();
                         Console.Clear();
                     }
-                    else if(currentUser is Librarian)
+                    else if (currentUser is Librarian)
                     {
 
 
@@ -151,9 +150,9 @@ namespace UML_Project
                             Console.Write("Enter book Title:");
                             string title = Console.ReadLine();
                             Console.Write("Enter book author:");
-                            string author= Console.ReadLine();
+                            string author = Console.ReadLine();
                             Console.Write("Enter year of publication:");
-                            int publicationYear= Convert.ToInt32(Console.ReadLine());
+                            int publicationYear = Convert.ToInt32(Console.ReadLine());
                             Console.Write("Enter genre:");
 
                             string genre = Console.ReadLine();
@@ -163,18 +162,18 @@ namespace UML_Project
                             Console.Write("Enter number of copies :");
 
                             int copies = Convert.ToInt32(Console.ReadLine());
-                            ((Librarian)currentUser).AddNewBook(librarySystem, title,  author,  publicationYear,  genre,  isbn,  copies);
+                            ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre, isbn, copies);
                         }
                         else if (LibrarinChoice == 2)
                         {
-                        
-                           ((Librarian)currentUser).Numberofbooks(librarySystem);
+
+                            ((Librarian)currentUser).Numberofbooks(librarySystem);
                         }
-                        else if(LibrarinChoice == 3)
+                        else if (LibrarinChoice == 3)
                         {
                             Console.Write("Enter book Title:");
                             string title = Console.ReadLine();
-                            Book FindBook = Librarian.FindBookByTitle(librarySystem,title);
+                            Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
                             if (FindBook != null)
                             {
                                 Console.WriteLine("Book Found");
@@ -234,7 +233,7 @@ namespace UML_Project
                         }
                         else if (userChoice == 5)
                         {
-                            // new
+                            // List books in the system
                             librarySystem.ListBooks();
                         }
                         else
