@@ -145,7 +145,6 @@ namespace UML_Project
 
                     foreach (string line in lines)
                     {
-                        Console.Write("Done");
                         string[] parts = line.Split(',');
                         UserRole role = (UserRole)Enum.Parse(typeof(UserRole), parts[0]);
                         

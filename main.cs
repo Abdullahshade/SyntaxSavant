@@ -19,19 +19,19 @@ namespace UML_Project
                     Console.Clear();
                     // Prompt the user to choose between registering a new user or logging in with an existing user
                     Console.WriteLine("Welcome to the library system!");
-                    Console.WriteLine("[1]register a new user \n[2]log in with an existing user");
+                    Console.WriteLine("[1]Login\n[2]Register");
 
                     try {
                         int choice = int.Parse(Console.ReadLine());
 
-                        if (choice == 1)
+                        if (choice == 2)
                         {
                             // Register a new user
                             librarySystem.Register();
                             Thread.Sleep(1000);
 
                         }
-                        else if (choice == 2)
+                        else if (choice == 1)
                         {
                             // Log in with an existing user
                             currentUser = librarySystem.Login();
@@ -69,77 +69,63 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("[1]Do you want to view all users\n[2]set a user's role \n[3]To remove user\n[4]modify Users\n[5]log out");
-                        int adminChoice = int.Parse(Console.ReadLine());
-
-                        if (adminChoice == 1)
+                        Console.WriteLine("[1]View all users\n[2]Remove Users\n[3]Modify Users\n[4]log out");
+                        try
                         {
-                            List<User> users = librarySystem.GetUsers();
-                            ((Admin)currentUser).ManageUserAccounts(users);
+                            int adminChoice = int.Parse(Console.ReadLine());
 
-                        }
-                        else if (adminChoice == 2)
-                        {
-                            Console.WriteLine("Enter the username of the user whose role you want to change:");
-                            string username = Console.ReadLine();
-                            User userToChange = librarySystem.GetUsers().Find(u => u.Username == username);
-
-                            if (userToChange != null)
+                            if (adminChoice == 1)
                             {
-                                Console.WriteLine("Enter the new role for the user:");
-                                UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
+                                List<User> users = librarySystem.GetUsers();
+                                ((Admin)currentUser).ManageUserAccounts(users);
 
-                                ((Admin)currentUser).SetRole(userToChange, newRole);
-                                librarySystem.SaveUsersToFile();
+                            }
+                            else if (adminChoice == 2)
+                            {
+                                Console.WriteLine("Enter the username of the user to be deleted:");
+                                string username = Console.ReadLine();
+                                User userToDelete = librarySystem.GetUsers().Find(u => u.Username == username);
 
+                                if (userToDelete != null)
+                                {
+                                    ((Admin)currentUser).DeleteUser(librarySystem, userToDelete);
+                                    librarySystem.SaveUsersToFile();
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine("User not found.");
+                                }
+                                librarySystem.LoadUsersFromFile();
+                            }
+                            else if (adminChoice == 3)
+                            {
+                                Console.WriteLine("Enter the username of the user to be modified:");
+                                string username = Console.ReadLine();
+                                User user2Modify = librarySystem.GetUsers().Find(u => u.Username == username);
+
+                                if (user2Modify != null)
+                                {
+                                    ((Admin)currentUser).modifyingUsers(librarySystem, user2Modify);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("User not found.");
+                                }
+                                librarySystem.LoadUsersFromFile();
+                            }
+                            else if (adminChoice == 4)
+                            {
+                                currentUser = null;
                             }
                             else
                             {
-                                Console.WriteLine("User not found.");
+                                Console.WriteLine("Invalid choice.");
                             }
-                            librarySystem.LoadUsersFromFile();
                         }
-                        else if (adminChoice == 3)
+                        catch (FormatException e)
                         {
-                            Console.WriteLine("Enter the username of the user to be deleted:");
-                            string username = Console.ReadLine();
-                            User userToDelete = librarySystem.GetUsers().Find(u => u.Username == username);
-
-                            if (userToDelete != null)
-                            {
-                                ((Admin)currentUser).DeleteUser(librarySystem, userToDelete);
-                                librarySystem.SaveUsersToFile();
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("User not found.");
-                            }
-                            librarySystem.LoadUsersFromFile();
-                        }
-                        else if (adminChoice == 4)
-                        {
-                            Console.WriteLine("Enter the username of the user to be modified:");
-                            string username = Console.ReadLine();
-                            User user2Modify = librarySystem.GetUsers().Find(u => u.Username == username);
-
-                            if (user2Modify != null)
-                            {
-                                ((Admin)currentUser).modifyingUsers(librarySystem, user2Modify);
-                            }
-                            else
-                            {
-                                Console.WriteLine("User not found.");
-                            }
-                            librarySystem.LoadUsersFromFile();
-                        }
-                        else if (adminChoice == 5)
-                        {
-                            currentUser = null;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid choice.");
+                            
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();
@@ -150,60 +136,67 @@ namespace UML_Project
 
 
                         Console.WriteLine("[1]Add new Book\n[2]View number of books \n[3]search book by title\n[4]remove book by name\n[5]logout");
-                        int LibrarinChoice = int.Parse(Console.ReadLine());
-
-                        if (LibrarinChoice == 1)
+                        try
                         {
-                            Console.Write("Enter book Title:");
-                            string title = Console.ReadLine();
-                            Console.Write("Enter book author:");
-                            string author = Console.ReadLine();
-                            Console.Write("Enter year of publication:");
-                            int publicationYear = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Enter genre:");
+                            int LibrarinChoice = int.Parse(Console.ReadLine());
 
-                            string genre = Console.ReadLine();
-                            Console.Write("Enter isbn:");
-
-                            int isbn = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Enter number of copies :");
-
-                            int copies = Convert.ToInt32(Console.ReadLine());
-                            ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre, isbn, copies);
-                        }
-                        else if (LibrarinChoice == 2)
-                        {
-
-                            ((Librarian)currentUser).Numberofbooks(librarySystem);
-                        }
-                        else if (LibrarinChoice == 3)
-                        {
-                            Console.Write("Enter book Title:");
-                            string title = Console.ReadLine();
-                            Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
-                            if (FindBook != null)
+                            if (LibrarinChoice == 1)
                             {
-                                Console.WriteLine("Book Found");
+                                Console.Write("Enter book Title:");
+                                string title = Console.ReadLine();
+                                Console.Write("Enter book author:");
+                                string author = Console.ReadLine();
+                                Console.Write("Enter year of publication:");
+                                int publicationYear = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Enter genre:");
+
+                                string genre = Console.ReadLine();
+                                Console.Write("Enter isbn:");
+
+                                int isbn = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Enter number of copies :");
+
+                                int copies = Convert.ToInt32(Console.ReadLine());
+                                ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre, isbn, copies);
+                            }
+                            else if (LibrarinChoice == 2)
+                            {
+
+                                ((Librarian)currentUser).Numberofbooks(librarySystem);
+                            }
+                            else if (LibrarinChoice == 3)
+                            {
+                                Console.Write("Enter book Title:");
+                                string title = Console.ReadLine();
+                                Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
+                                if (FindBook != null)
+                                {
+                                    Console.WriteLine("Book Found");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Book not found! ");
+                                }
+                            }
+                            else if (LibrarinChoice == 4)
+                            {
+                                Console.Write("Enter book Title:");
+                                string title = Console.ReadLine();
+                                ((Librarian)currentUser).RemoveBook(librarySystem, title);
+
+                            }
+                            else if (LibrarinChoice == 5)
+                            {
+                                currentUser = null;
                             }
                             else
                             {
-                                Console.WriteLine("Book not found! ");
+                                Console.WriteLine("Invalid choice.");
                             }
                         }
-                        else if (LibrarinChoice == 4)
+                        catch (FormatException e)
                         {
-                            Console.Write("Enter book Title:");
-                            string title = Console.ReadLine();
-                            ((Librarian)currentUser).RemoveBook(librarySystem, title);
-
-                        }
-                        else if (LibrarinChoice == 5)
-                        {
-                            currentUser = null;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid choice.");
+                           
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();
@@ -213,39 +206,46 @@ namespace UML_Project
                     }
                     else
                     {
-                        Console.WriteLine("[1]log out\n[2]to request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books ");
-                        int userChoice = int.Parse(Console.ReadLine());
+                        Console.WriteLine("[1]log out\n[2]Request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books ");
+                        try
+                        {
+                            int userChoice = int.Parse(Console.ReadLine());
 
-                        if (userChoice == 1)
-                        {
-                            currentUser = null;
-                        }
-                        else if (userChoice == 2)
-                        {
-                            // Add additional options for normal users here
-                            ((Patron)currentUser).RequestBorrowing(librarySystem);
+                            if (userChoice == 1)
+                            {
+                                currentUser = null;
+                            }
+                            else if (userChoice == 2)
+                            {
+                                // Add additional options for normal users here
+                                ((Patron)currentUser).RequestBorrowing(librarySystem);
 
-                        }
-                        else if (userChoice == 3)
-                        {
-                            // Add additional options for normal users here
-                            ((Patron)currentUser).RequestReservation(librarySystem);
+                            }
+                            else if (userChoice == 3)
+                            {
+                                // Add additional options for normal users here
+                                ((Patron)currentUser).RequestReservation(librarySystem);
 
-                        }
-                        else if (userChoice == 4)
-                        {
-                            // Add additional options for normal users here
-                            currentUser.ViewFines();
+                            }
+                            else if (userChoice == 4)
+                            {
+                                // Add additional options for normal users here
+                                currentUser.ViewFines();
 
+                            }
+                            else if (userChoice == 5)
+                            {
+                                // List books in the system
+                                librarySystem.ListBooks();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid choice.");
+                            }
                         }
-                        else if (userChoice == 5)
+                        catch (FormatException e)
                         {
-                            // List books in the system
-                            librarySystem.ListBooks();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid choice.");
+                            
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();

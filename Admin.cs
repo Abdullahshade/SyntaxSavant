@@ -41,7 +41,7 @@ namespace UML_Project
 
         public void modifyingUsers(LibrarySystem lb, User userToModify)
         {
-            Console.WriteLine("[0]To change username\n[1]To change password");
+            Console.WriteLine("[0]To change username\n[1]To change password\n[2]To change role");
             int readL = Convert.ToInt32(Console.ReadLine());
             if (readL == 0)
             {
@@ -56,6 +56,18 @@ namespace UML_Project
                 string newPass = Console.ReadLine();
                 userToModify.Password = newPass;
 
+            }else if (readL == 2)
+            {
+               
+                    Console.WriteLine("Enter the new role for the user:");
+                    UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
+
+                    SetRole(userToModify, newRole);
+                    lb.SaveUsersToFile();
+
+                
+                
+                lb.LoadUsersFromFile();
             }
             else
             {
