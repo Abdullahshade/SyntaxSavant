@@ -9,6 +9,7 @@ namespace UML_Project
 
 
         private string[] workSchedule;
+        private int duedate;
         // private string emailAddress;
 
         public Librarian(string name, string username, string password, int id, string[] workSchedule = null) : base(name, username, password, UserRole.Librarian, id)
@@ -44,11 +45,11 @@ namespace UML_Project
 
 
 
-            
-                Book book = new Book(title, author, publicationYear, genre, isbn, copies);
-                lb.AddBookToBooks(book);
 
-            
+            Book book = new Book(title, author, publicationYear, genre, isbn, copies);
+            lb.AddBookToBooks(book);
+
+
 
             Console.WriteLine("New book added: " + title);
         }
@@ -80,5 +81,24 @@ namespace UML_Project
 
 
         }
+        public bool CheckOut(Book book, int borrowDuration) {
+            DateTime dueDate = DateTime.Now.AddDays(borrowDuration);
+            if (book.GetAvailabilityStatus())
+            {
+                book.Availabilitystatus=false ;
+                book.Duetime = dueDate;
+               
+
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("The book '{0}' is not available for checkout.", book.Title);
+                return false;
+            }
+
+        }
+         
+
     }
 }
