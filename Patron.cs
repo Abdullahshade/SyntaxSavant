@@ -36,6 +36,7 @@ namespace UML_Project
                     int cout = book.GetCopies();
                     BorrowedItems.Add(book);
                     book.SetCopies(--cout);
+                    if (cout == 0) book.EditAvabliabiltiyStatus();
                     lb.SaveBooksToFile();
                     Console.WriteLine("Book borrowed successfully.");
                     return true;

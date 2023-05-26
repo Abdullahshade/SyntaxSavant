@@ -33,6 +33,7 @@ namespace UML_Project
         public string ISBN1 { get => ISBN; set => ISBN = value; }
         public string Genre { get => genre; set => genre = value; }
         public string Title { get => title; set => title = value; }
+        public string Author { get => author; set => author = value; }
         public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, int copies = 1, bool availabilitystatus = true)
         {
             this.title = title;
@@ -124,24 +125,9 @@ namespace UML_Project
         }
         public void EditAvabliabiltiyStatus()
         {
-            bool validinput = false;
-            bool temp_status = true;
-            while (!validinput)
-            {
-                try
-                {
-                    Console.Write("Enter the new availability status (true or false): ");
-                    string s = Console.ReadLine();
-                    temp_status = Convert.ToBoolean(s);
-                    validinput = true;
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid input, please enter either 'true' or 'false'.");
-                }
-            }
-            this.availabilitystatus = temp_status;
-            Console.WriteLine("Availability status updated successfully.");
+           
+            availabilitystatus = !GetAvailabilityStatus();
+           // Console.WriteLine("Availability status updated successfully.");
         }
         public void SendNewBookInfo(Catalog c)
         {

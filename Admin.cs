@@ -38,6 +38,10 @@ namespace UML_Project
         {
             lb.DeleteUser(userToDelete);
         }
+        public void generateReports(LibrarySystem lb)
+        {
+            lb.generateReports();
+        }
 
         public void modifyingUsers(LibrarySystem lb, User userToModify)
         {

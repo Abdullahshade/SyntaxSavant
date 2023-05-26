@@ -25,6 +25,18 @@ namespace UML_Project
         {
             return lb.FindBookByTitle(title);
         }
+        public static Book FindBookByAuthor(LibrarySystem lb, string author)
+        {
+            return lb.FindBookByAuthor(author);
+        }
+        public static Book FindBookByISBN(LibrarySystem lb, string ISBN)
+        {
+            return lb.FindBookByISBN(ISBN);
+        }
+        public static Book FindBookByGenre(LibrarySystem lb, string genre)
+        {
+            return lb.FindBookByGenre(genre);
+        }
 
         public void AddNewBook(LibrarySystem lb, string title, string author, int publicationYear, string genre, int isbn, int copies)
         {

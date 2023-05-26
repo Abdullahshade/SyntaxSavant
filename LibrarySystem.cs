@@ -115,6 +115,50 @@ namespace UML_Project
             }
             return null;
         }
+        public Book FindBookByAuthor(string author)
+        {
+
+            foreach (Book book in books)
+            {
+                if (book.Author == author)
+                {
+                    book.ShowBookInfo();
+                    Console.WriteLine("-------------------");
+
+                }
+
+            }
+            return null;
+        }
+        public Book FindBookByISBN(string ISBN)
+        {
+
+            foreach (Book book in books)
+            {
+                if (book.ISBN1 == ISBN)
+                {
+                    return book;
+                }
+
+            }
+            return null;
+        }
+        public Book FindBookByGenre(string Genre)
+        {
+
+            foreach (Book book in books)
+            {
+                if (book.Genre == Genre)
+                {
+                    book.ShowBookInfo();
+                    Console.WriteLine("-------------------");
+
+                }
+
+            }
+            return null;
+        }
+
         public void AddBookToBooks(Book newBook)
         {
             books.Add(newBook);
@@ -132,7 +176,18 @@ namespace UML_Project
             catalog.RemoveBookFromGenre(book);
             SaveBooksToFile();
         }
+        public void generateReports()
+        {
+            DateTime now = DateTime.Now;
 
+            Console.Write("=========================\nLibrary Report "+ now.ToString("F")+ "\n=========================\n|Number of books : "+books.Count()+"\n|Number of users : "+users.Count() + "\n|books currently on loan : ");
+            int counter = 0;
+            foreach (Book bo in books)
+            {
+                if (!bo.GetAvailabilityStatus()) counter++;
+            }
+            Console.WriteLine(counter);
+        }
         public void LoadUsersFromFile()
         {
             users.Clear();

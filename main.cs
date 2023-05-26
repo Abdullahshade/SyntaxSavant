@@ -69,12 +69,17 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("[1]View all users\n[2]Remove Users\n[3]Modify Users\n[4]log out");
+                        Console.WriteLine("[0]Generate library Report\n[1]View all users\n[2]Remove Users\n[3]Modify Users\n[4]log out");
                         try
                         {
                             int adminChoice = int.Parse(Console.ReadLine());
 
-                            if (adminChoice == 1)
+                            if (adminChoice == 0)
+                            {
+                                ((Admin)currentUser).generateReports(librarySystem);
+
+                            }
+                            else if (adminChoice == 1)
                             {
                                 List<User> users = librarySystem.GetUsers();
                                 ((Admin)currentUser).ManageUserAccounts(users);
@@ -82,6 +87,10 @@ namespace UML_Project
                             }
                             else if (adminChoice == 2)
                             {
+                                List<User> users = librarySystem.GetUsers();
+
+                                ((Admin)currentUser).ManageUserAccounts(users);
+
                                 Console.WriteLine("Enter the username of the user to be deleted:");
                                 string username = Console.ReadLine();
                                 User userToDelete = librarySystem.GetUsers().Find(u => u.Username == username);
@@ -100,6 +109,10 @@ namespace UML_Project
                             }
                             else if (adminChoice == 3)
                             {
+                                List<User> users = librarySystem.GetUsers();
+
+                                ((Admin)currentUser).ManageUserAccounts(users);
+
                                 Console.WriteLine("Enter the username of the user to be modified:");
                                 string username = Console.ReadLine();
                                 User user2Modify = librarySystem.GetUsers().Find(u => u.Username == username);
@@ -135,7 +148,7 @@ namespace UML_Project
                     {
 
 
-                        Console.WriteLine("[1]Add new Book\n[2]View number of books \n[3]search book by title\n[4]remove book by name\n[5]logout");
+                        Console.WriteLine("[1]Add new Book\n[2]View number of books \n[3]search book\n[4]remove book by name\n[5]logout");
                         try
                         {
                             int LibrarinChoice = int.Parse(Console.ReadLine());
@@ -166,16 +179,66 @@ namespace UML_Project
                             }
                             else if (LibrarinChoice == 3)
                             {
-                                Console.Write("Enter book Title:");
-                                string title = Console.ReadLine();
-                                Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
-                                if (FindBook != null)
+                                Console.Write("Search book by:\n[0]Title\n[1]author\n[2]ISBN\n[3]genre\n");
+                                int searchBy = int.Parse(Console.ReadLine());
+                                if (searchBy == 0)
                                 {
-                                    Console.WriteLine("Book Found");
+                                    Console.Write("Enter book Title:");
+                                    string title = Console.ReadLine();
+                                    Book FindBook = Librarian.FindBookByTitle(librarySystem, title);
+                                    if (FindBook != null)
+                                    {
+                                        FindBook.ShowBookInfo();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Book not found! ");
+                                    }
+                                }else if (searchBy == 1)
+                                {
+                                    Console.Write("Enter book author:");
+                                    string author = Console.ReadLine();
+                                    Book FindBook = Librarian.FindBookByAuthor(librarySystem, author);
+                                    if (FindBook != null)
+                                    {
+                                        Console.WriteLine("-------------------");
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Book not found! ");
+                                    }
+
                                 }
-                                else
+                                else if (searchBy == 2)
                                 {
-                                    Console.WriteLine("Book not found! ");
+                                    Console.Write("Enter book ISBN:");
+                                    string ISBN = Console.ReadLine();
+                                    Book FindBook = Librarian.FindBookByISBN(librarySystem, ISBN);
+                                    if (FindBook != null)
+                                    {
+                                        FindBook.ShowBookInfo();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Book not found! ");
+                                    }
+
+                                }
+                                else if (searchBy == 3)
+                                {
+                                    Console.Write("Enter book genre:");
+                                    string genre = Console.ReadLine();
+                                    Book FindBook = Librarian.FindBookByGenre(librarySystem, genre);
+                                    if (FindBook != null)
+                                    {
+                                        Console.WriteLine("-------------------");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Book not found! ");
+                                    }
+
                                 }
                             }
                             else if (LibrarinChoice == 4)
