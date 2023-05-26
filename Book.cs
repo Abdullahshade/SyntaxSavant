@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 
@@ -16,13 +16,15 @@ namespace UML_Project
         bool availabilitystatus;
         int copies;
         DateTime borrowedDate;
+        DateTime duetime;
+        
         public void SetCopies(int newCopies)
         {
-            copies = newCopies;
+            Copies = newCopies;
         }
         public int GetCopies()
         {
-            return copies;
+            return Copies;
         }
         public bool GetAvailabilityStatus()
         {
@@ -40,6 +42,10 @@ namespace UML_Project
         public string Title { get => title; set => title = value; }
         public string Author { get => author; set => author = value; }
         public DateTime BorrowedDate { get => borrowedDate; set => borrowedDate = value; }
+        public DateTime Duetime { get => duetime; set => duetime = value; }
+        public bool Availabilitystatus { get => availabilitystatus; set => availabilitystatus = value; }
+        public int Copies { get => copies; set => copies = value; }
+
         public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, int copies = 1, bool availabilitystatus = true)
         {
             this.title = title;
@@ -48,7 +54,7 @@ namespace UML_Project
             this.genre = genre;
             this.ISBN1 = GenerateISBN();
             this.availabilitystatus = availabilitystatus;
-            this.copies = copies;
+            this.Copies = copies;
         }
 
         string GenerateISBN()
@@ -102,7 +108,7 @@ namespace UML_Project
                 Console.WriteLine("The book is available.");
             else
                 Console.WriteLine("The book is  not available.");
-            Console.WriteLine("Number of Copies: " + this.copies);
+            Console.WriteLine("Number of Copies: " + this.Copies);
 
 
 
@@ -126,12 +132,12 @@ namespace UML_Project
                     Console.WriteLine("Invalid iuput ,Please enter valid input .");
                 }
             }
-            this.copies = newcopies;
+            this.Copies = newcopies;
             Console.WriteLine("Number of copies updated successfully. ");
         }
         public void EditAvabliabiltiyStatus()
         {
-            if (copies <= 0)
+            if (Copies <= 0)
                 availabilitystatus = !GetAvailabilityStatus();
             else availabilitystatus = true;
 
@@ -186,7 +192,7 @@ namespace UML_Project
                     Console.WriteLine("Invalid iuput ,Please enter valid input .");
                 }
             }
-            this.copies = newcopies;
+            this.Copies = newcopies;
         }
         public void ShowISBN()
         {
