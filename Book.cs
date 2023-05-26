@@ -15,6 +15,7 @@ namespace UML_Project
         string ISBN;
         bool availabilitystatus;
         int copies;
+        DateTime borrowedDate;
         public void SetCopies(int newCopies)
         {
             copies = newCopies;
@@ -27,6 +28,10 @@ namespace UML_Project
         {
             return availabilitystatus;
         }
+        public void updateBorrowedDate()
+        {
+            borrowedDate = DateTime.Now;
+        }
 
         List<string> previousISBNs = new List<string>();
 
@@ -34,6 +39,7 @@ namespace UML_Project
         public string Genre { get => genre; set => genre = value; }
         public string Title { get => title; set => title = value; }
         public string Author { get => author; set => author = value; }
+        public DateTime BorrowedDate { get => borrowedDate; set => borrowedDate = value; }
         public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, int copies = 1, bool availabilitystatus = true)
         {
             this.title = title;
@@ -125,9 +131,11 @@ namespace UML_Project
         }
         public void EditAvabliabiltiyStatus()
         {
-           
-            availabilitystatus = !GetAvailabilityStatus();
-           // Console.WriteLine("Availability status updated successfully.");
+            if (copies <= 0)
+                availabilitystatus = !GetAvailabilityStatus();
+            else availabilitystatus = true;
+
+            // Console.WriteLine("Availability status updated successfully.");
         }
         public void SendNewBookInfo(Catalog c)
         {

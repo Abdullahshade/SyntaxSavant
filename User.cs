@@ -9,7 +9,7 @@ namespace UML_Project
         string password;
         string username;
         int id;
-        float fees;
+        double fees;
         private UserRole role;
 
         public User(string name, string username, string password, UserRole role, int id, float fees = 0)
@@ -26,13 +26,14 @@ namespace UML_Project
         public UserRole Role { get => role; set => role = value; }
         public string Username { get => username; set => username = value; }
         public int Id { get => id; set => id = value; }
-        public float Fees { get => fees; set => fees = value; }
+        public double Fees { get => fees; set => fees = value; }
 
         
 
         public void ViewFines()
         {
-            Console.WriteLine("Outstanding Fines: {0}", Fees);
+            Console.Write("*Note*\nfree borrowe time is 72 hours, after that you will be charged 0.5 JOD for every 5 hours late\n******\n");
+            Console.WriteLine("| Outstanding Fines: {0}", Fees);
         }
  
     }

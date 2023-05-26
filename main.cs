@@ -269,7 +269,7 @@ namespace UML_Project
                     }
                     else
                     {
-                        Console.WriteLine("[1]log out\n[2]Request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books ");
+                        Console.WriteLine("[1]log out\n[2]Request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books\n[6]My Books");
                         try
                         {
                             int userChoice = int.Parse(Console.ReadLine());
@@ -282,24 +282,38 @@ namespace UML_Project
                             {
                                 // Add additional options for normal users here
                                 ((Patron)currentUser).RequestBorrowing(librarySystem);
-
+                                librarySystem.SaveBooksToFile();
+                                
                             }
                             else if (userChoice == 3)
                             {
                                 // Add additional options for normal users here
                                 ((Patron)currentUser).RequestReservation(librarySystem);
+                                librarySystem.SaveBooksToFile();
 
                             }
                             else if (userChoice == 4)
                             {
-                                // Add additional options for normal users here
-                                currentUser.ViewFines();
+                                
+                                    ((Patron)currentUser).updateFines();
+
+                                    // Add additional options for normal users here
+                                    currentUser.ViewFines();
+                                
 
                             }
                             else if (userChoice == 5)
                             {
                                 // List books in the system
                                 librarySystem.ListBooks();
+                            }
+                            else if (userChoice == 6)
+                            {
+                                // List books in the system
+                                ((Patron)currentUser).ShowBorrowedBooks();
+
+                                ((Patron)currentUser).ShowReservedBooks();
+
                             }
                             else
                             {

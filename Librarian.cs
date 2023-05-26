@@ -44,13 +44,11 @@ namespace UML_Project
 
 
 
-            for (int j = 1; j <= copies; j++)
-            {
-
-                Book book = new Book(title, author, publicationYear, genre, isbn, 1);
+            
+                Book book = new Book(title, author, publicationYear, genre, isbn, copies);
                 lb.AddBookToBooks(book);
 
-            }
+            
 
             Console.WriteLine("New book added: " + title);
         }

@@ -298,14 +298,26 @@ namespace UML_Project
         }
         public void LoadBooksFromFile()
         {
-            FileStream fileStream = new FileStream("books.dat", FileMode.Open);
+            FileStream fileStream = null;
+            try
+            {
+                fileStream = new FileStream("books.dat", FileMode.Open);
 
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            books = (List<Book>)binaryFormatter.Deserialize(fileStream);
-            fileStream.Close();
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                books = (List<Book>)binaryFormatter.Deserialize(fileStream);
+            }
+            catch (FileNotFoundException)
+            {
+                // File not found, handle the exception
+                books = new List<Book>();
+            }
+            finally
+            {
+                fileStream?.Close();
+            }
         }
 
-            
+
         public void DeleteUser(User user)
         {
             int id = user.Id;
