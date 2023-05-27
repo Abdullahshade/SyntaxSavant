@@ -71,7 +71,7 @@ namespace UML_Project
                     if (currentUser is Admin)
                     {
                         // If user is admin, show additional options
-                        Console.WriteLine("[0]Generate library Report\n[1]View all users\n[2]Remove Users\n[3]Modify Users\n[4]log out");
+                        Console.WriteLine("[0]Generate library Report\n[1]View all users\n[2]Remove Users\n[3]Modify Users\n[4]Generate Financial Report \n[5]log out");
                         try
                         {
                             int adminChoice = int.Parse(Console.ReadLine());
@@ -129,11 +129,18 @@ namespace UML_Project
                                 }
                                 librarySystem.LoadUsersFromFile();
                             }
-                            else if (adminChoice == 4)
+                          
+                            else if(adminChoice == 4)
+                            {
+                                List<Patron> patrons = librarySystem.GetPatrons();
+
+                                ((User )currentUser).GenerateFinancialReport(patrons);
+                            }
+                            else if (adminChoice == 5)
                             {
                                 currentUser = null;
                             }
-                            else
+                            else 
                             {
                                 Console.WriteLine("Invalid choice.");
                             }
@@ -151,7 +158,7 @@ namespace UML_Project
                     {
 
 
-                        Console.WriteLine("[0]List Books\n[1]Add new Book\n[2]View number of books \n[3]search book\n[4]remove book by name\n[5]checkin book\n[6]cheackout book\n[7]logout");
+                        Console.WriteLine("[0]List Books\n[1]Add new Book\n[2]View number of books \n[3]search book\n[4]remove book by name\n[5]checkin book\n[6]cheackout book \n[7]Generate Financial Report\n[8]logout");
                         try
                         {
                             int LibrarinChoice = int.Parse(Console.ReadLine());
@@ -291,6 +298,12 @@ namespace UML_Project
 
                             }
                             else if (LibrarinChoice == 7)
+                            {
+                                List<Patron> patrons = librarySystem.GetPatrons();
+
+                                ((User)currentUser).GenerateFinancialReport(patrons);
+                            }
+                            else if (LibrarinChoice == 8)
                             {
                                 currentUser = null;
                             }
