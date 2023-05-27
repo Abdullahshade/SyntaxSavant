@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -21,7 +21,8 @@ namespace UML_Project
                     Console.WriteLine("Welcome to the library system!");
                     Console.WriteLine("[1]Login\n[2]Register");
 
-                    try {
+                    try
+                    {
                         int choice = int.Parse(Console.ReadLine());
 
                         if (choice == 2)
@@ -58,11 +59,12 @@ namespace UML_Project
 
                         }
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         Console.WriteLine("choice cannot be null! ");
                         Thread.Sleep(1000);
                     }
-                    }
+                }
                 else
                 {
                     // User is logged in
@@ -138,39 +140,59 @@ namespace UML_Project
                         }
                         catch (FormatException e)
                         {
-                            
+
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();
                         Console.Clear();
                     }
+                    // user is a Librarian
                     else if (currentUser is Librarian)
                     {
 
 
-                        Console.WriteLine("[1]Add new Book\n[2]View number of books \n[3]search book\n[4]remove book by name\n[5]logout");
+                        Console.WriteLine("[0]List Books\n[1]Add new Book\n[2]View number of books \n[3]search book\n[4]remove book by name\n[5]checkin book\n[6]cheackout book\n[7]logout");
                         try
                         {
                             int LibrarinChoice = int.Parse(Console.ReadLine());
 
-                            if (LibrarinChoice == 1)
+                            if (LibrarinChoice == 0)
+                            {
+                                librarySystem.ListBooks();
+                            }
+                            else if (LibrarinChoice == 1)
                             {
                                 Console.Write("Enter book Title:");
                                 string title = Console.ReadLine();
+
                                 Console.Write("Enter book author:");
                                 string author = Console.ReadLine();
-                                Console.Write("Enter year of publication:");
-                                int publicationYear = Convert.ToInt32(Console.ReadLine());
+
+
+                                int publicationYear = 0;
+                                bool isValidInput = false;
+
+                                while (!isValidInput)
+                                {
+                                    try
+                                    {
+                                        Console.Write("Enter year of publication: ");
+                                        publicationYear = Convert.ToInt32(Console.ReadLine());
+                                        isValidInput = true;
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        Console.WriteLine("Invalid input. Please enter a valid integer for the year of publication.");
+                                    }
+                                }
+
+
                                 Console.Write("Enter genre:");
-
                                 string genre = Console.ReadLine();
-                                Console.Write("Enter isbn:");
 
-                                int isbn = Convert.ToInt32(Console.ReadLine());
-                                Console.Write("Enter number of copies :");
 
-                                int copies = Convert.ToInt32(Console.ReadLine());
-                                ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre, isbn, copies);
+
+                                ((Librarian)currentUser).AddNewBook(librarySystem, title, author, publicationYear, genre);
                             }
                             else if (LibrarinChoice == 2)
                             {
@@ -194,7 +216,8 @@ namespace UML_Project
                                     {
                                         Console.WriteLine("Book not found! ");
                                     }
-                                }else if (searchBy == 1)
+                                }
+                                else if (searchBy == 1)
                                 {
                                     Console.Write("Enter book author:");
                                     string author = Console.ReadLine();
@@ -250,6 +273,25 @@ namespace UML_Project
                             }
                             else if (LibrarinChoice == 5)
                             {
+                                Console.WriteLine("Enter the title of the book: ");
+                                string title = Console.ReadLine();
+                                librarySystem.ReturnBook(title);
+
+                                Console.WriteLine("Enter The username of the patron");
+                                string username = Console.ReadLine();
+                                librarySystem.GetNameOfPatronToCheckInBook(username, title);
+                                Console.WriteLine("Book checked in Successfully");
+                            }
+                            else if (LibrarinChoice == 6)
+                            {
+                                Console.WriteLine("Enter the title of the book to cheakout : ");
+                                string title = Console.ReadLine();
+                                Book book = Librarian.FindBookByTitle(librarySystem, title);
+                                ((Librarian)currentUser).CheckOut(book, 14);
+
+                            }
+                            else if (LibrarinChoice == 7)
+                            {
                                 currentUser = null;
                             }
                             else
@@ -259,7 +301,7 @@ namespace UML_Project
                         }
                         catch (FormatException e)
                         {
-                           
+                            Console.WriteLine(e.Message);
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();
@@ -267,23 +309,27 @@ namespace UML_Project
 
 
                     }
+                    // user is a patron
                     else
                     {
-                        Console.WriteLine("[1]log out\n[2]Request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books\n[6]My Books");
+                        Console.WriteLine("[1]My Books\n[2]Request borrwoing \n[3]Request Reservation\n[4]View Fines\n[5]List Books\n[6]Notifications and Reminders\n[7]Messages\n[8]return book\n[9]log out");
                         try
                         {
                             int userChoice = int.Parse(Console.ReadLine());
 
                             if (userChoice == 1)
                             {
-                                currentUser = null;
+                                // List books in the system
+                                ((Patron)currentUser).ShowBorrowedBooks();
+
+                                ((Patron)currentUser).ShowReservedBooks();
                             }
                             else if (userChoice == 2)
                             {
                                 // Add additional options for normal users here
                                 ((Patron)currentUser).RequestBorrowing(librarySystem);
                                 librarySystem.SaveBooksToFile();
-                                
+
                             }
                             else if (userChoice == 3)
                             {
@@ -294,12 +340,12 @@ namespace UML_Project
                             }
                             else if (userChoice == 4)
                             {
-                                
-                                    ((Patron)currentUser).updateFines();
 
-                                    // Add additional options for normal users here
-                                    currentUser.ViewFines();
-                                
+                                ((Patron)currentUser).updateFines();
+
+                                // Add additional options for normal users here
+                                currentUser.ViewFines();
+
 
                             }
                             else if (userChoice == 5)
@@ -309,12 +355,61 @@ namespace UML_Project
                             }
                             else if (userChoice == 6)
                             {
-                                // List books in the system
-                                ((Patron)currentUser).ShowBorrowedBooks();
-
-                                ((Patron)currentUser).ShowReservedBooks();
 
                             }
+                            else if (userChoice == 7)
+                            {
+
+                            }
+                            else if (userChoice == 8)
+                            {
+
+                                Console.WriteLine("Enter the title of the book: ");
+                                string title = Console.ReadLine();
+
+                                Book borrowedBook = ((Patron)currentUser).BorrowedItems.Find(b => b.Title == title);// make sure the patron borrwed the book
+                                try
+                                {
+                                    if (title == borrowedBook.Title && borrowedBook != null)
+                                    {
+                                        Book book = librarySystem.GetBooks().Find(b => b.Title == title);
+                                        ((Patron)currentUser).updateFines();
+                                        ((Patron)currentUser).DeleteBookFromBorrowedItems(book);
+                                        ((Patron)currentUser).LoadDataFromFile();
+                                        librarySystem.ReturnBook(title);
+                                        librarySystem.LoadBooksFromFile();
+
+                                        Console.WriteLine("Book Returned Successfully");
+
+                                        Console.WriteLine("Outstanding Fees: {0}", currentUser.Fees);
+                                        if (currentUser.Fees != 0)
+                                        {
+                                            Console.WriteLine("Do you wish to pay? y for yes, n for no");
+                                            string c = Console.ReadLine();
+                                            c.ToCharArray();
+                                            if (c[0] == 'y')
+                                            {
+                                                Console.WriteLine("Press Enter to pay");
+                                                Console.ReadKey();
+                                                Console.WriteLine("Paid Successfully");
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Book isn't borrowed");
+                                    }
+                                }
+                                catch (NullReferenceException e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                }
+                            }
+                            else if (userChoice == 9)
+                            {
+                                currentUser = null;
+                            }
+
                             else
                             {
                                 Console.WriteLine("Invalid choice.");
@@ -322,7 +417,7 @@ namespace UML_Project
                         }
                         catch (FormatException e)
                         {
-                            
+                            Console.WriteLine(e.Message);
                         }
                         Console.WriteLine("Press any key to continue.");
                         Console.ReadKey();
