@@ -14,18 +14,10 @@ namespace UML_Project
         string genre;
         string ISBN;
         bool availabilitystatus;
-        int copies;
+
         DateTime borrowedDate;
         DateTime duetime;
-        
-        public void SetCopies(int newCopies)
-        {
-            Copies = newCopies;
-        }
-        public int GetCopies()
-        {
-            return Copies;
-        }
+
         public bool GetAvailabilityStatus()
         {
             return availabilitystatus;
@@ -44,9 +36,8 @@ namespace UML_Project
         public DateTime BorrowedDate { get => borrowedDate; set => borrowedDate = value; }
         public DateTime Duetime { get => duetime; set => duetime = value; }
         public bool Availabilitystatus { get => availabilitystatus; set => availabilitystatus = value; }
-        public int Copies { get => copies; set => copies = value; }
 
-        public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, int copies = 1, bool availabilitystatus = true)
+        public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, bool availabilitystatus = true)
         {
             this.title = title;
             this.author = author;
@@ -54,7 +45,7 @@ namespace UML_Project
             this.genre = genre;
             this.ISBN1 = GenerateISBN();
             this.availabilitystatus = availabilitystatus;
-            this.Copies = copies;
+
         }
 
         string GenerateISBN()
@@ -97,7 +88,6 @@ namespace UML_Project
         }
         public void ShowBookInfo()
         {
-
             Console.WriteLine("Title: " + this.title);
             Console.WriteLine("Author: " + this.author);
             Console.WriteLine("Publication Year: " + this.publicationyear);
@@ -107,39 +97,12 @@ namespace UML_Project
             if (this.availabilitystatus)
                 Console.WriteLine("The book is available.");
             else
-                Console.WriteLine("The book is  not available.");
-            Console.WriteLine("Number of Copies: " + this.Copies);
-
-
-
+                Console.WriteLine("The book is not available.");
         }
-        public void EditCopiesNumber()
-        {
-            bool validinput = false;
-            int newcopies = 0;
 
-            while (!validinput)
-            {
-                try
-                {
-                    Console.Write("Enter the new number of copies: ");
-                    string s = Console.ReadLine();
-                    newcopies = Convert.ToInt32(s);
-                    validinput = true;
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid iuput ,Please enter valid input .");
-                }
-            }
-            this.Copies = newcopies;
-            Console.WriteLine("Number of copies updated successfully. ");
-        }
         public void EditAvabliabiltiyStatus()
         {
-            if (Copies <= 0)
-                availabilitystatus = !GetAvailabilityStatus();
-            else availabilitystatus = true;
+            availabilitystatus = !GetAvailabilityStatus();
 
             // Console.WriteLine("Availability status updated successfully.");
         }
@@ -173,27 +136,7 @@ namespace UML_Project
             //end of publictonyear
 
         }
-        void SetCopies()
-        {
-            bool validin = false;
-            int newcopies = 0;
 
-            while (!validin)
-            {
-                try
-                {
-                    Console.Write("Enter the  number of copies: ");
-                    string s = Console.ReadLine();
-                    newcopies = Convert.ToInt32(s);
-                    validin = true;
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid iuput ,Please enter valid input .");
-                }
-            }
-            this.Copies = newcopies;
-        }
         public void ShowISBN()
         {
             Console.WriteLine("ISBN: " + this.ISBN1);
