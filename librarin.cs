@@ -1,6 +1,5 @@
-﻿using System;
-
-
+using System;
+using System.Collections.Generic;
 
 namespace UML_Project
 {
@@ -9,7 +8,6 @@ namespace UML_Project
 
 
         private string[] workSchedule;
-        private int duedate;
         // private string emailAddress;
 
         public Librarian(string name, string username, string password, int id, string[] workSchedule = null) : base(name, username, password, UserRole.Librarian, id)
@@ -39,14 +37,10 @@ namespace UML_Project
             return lb.FindBookByGenre(genre);
         }
 
-        public void AddNewBook(LibrarySystem lb, string title, string author, int publicationYear, string genre, int isbn, int copies)
+        public void AddNewBook(LibrarySystem lb, string title, string author, int publicationYear, string genre, int isbn = 0)
         {
 
-
-
-
-
-            Book book = new Book(title, author, publicationYear, genre, isbn, copies);
+            Book book = new Book(title, author, publicationYear, genre);
             lb.AddBookToBooks(book);
 
 
@@ -78,16 +72,16 @@ namespace UML_Project
             {
                 Console.WriteLine("Book not found.");
             }
-
-
         }
-        public bool CheckOut(Book book, int borrowDuration) {
+
+        public bool CheckOut(Book book, int borrowDuration)
+        {
             DateTime dueDate = DateTime.Now.AddDays(borrowDuration);
             if (book.GetAvailabilityStatus())
             {
-                book.Availabilitystatus=false ;
+                book.Availabilitystatus = false;
                 book.Duetime = dueDate;
-               
+
 
                 return true;
             }
@@ -98,7 +92,6 @@ namespace UML_Project
             }
 
         }
-         
 
     }
 }
