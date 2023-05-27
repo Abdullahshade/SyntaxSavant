@@ -108,7 +108,10 @@ namespace UML_Project
 
                     book.updateBorrowedDate();
                     book.EditAvabliabiltiyStatus();
-
+                    foreach(Book bo in reserveditems)
+                    {
+                        if(book.ISBN1 == bo.ISBN1 ) reserveditems.Remove(bo);
+                    }
                     lb.SaveBooksToFile();
                     Console.WriteLine("Book borrowed successfully.");
                     SaveDataToFile();
@@ -129,7 +132,7 @@ namespace UML_Project
                 return false;
             }
         }
-
+   
         public void RequestReservation(LibrarySystem lb)
         {
             Console.Write("Enter the title of the book you want to reserve: ");

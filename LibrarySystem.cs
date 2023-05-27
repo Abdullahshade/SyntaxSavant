@@ -24,7 +24,7 @@ namespace UML_Project
         int usersNumber = 1;
         public List<User> users;
         private string usersFilePath = "users.txt";
-        public List<Patron> patrons;
+        public List<Patron> patrons = new List<Patron>();
 
         public int UsersNumber { get => usersNumber; set => usersNumber = value; }
         public static List<Book> Books { get => books; set => books = value; }
@@ -44,17 +44,6 @@ namespace UML_Project
         {
             return users;
         }
-        public List<Patron> GetPatrons()
-        {
-            foreach(User user in users)
-            {
-                if(user.Role == UserRole.Patron)
-                {
-                    patrons.Add((Patron)user);
-                }
-            }
-            return patrons;
-        }
         public User Login(string username, string password)
         {
             foreach (User user in users)
@@ -67,6 +56,51 @@ namespace UML_Project
 
             return null; // User not found
         }
+        public List<Patron> GetPatrons()
+        {
+            foreach (User user in users)
+            {
+                if (user.Role == UserRole.Patron)
+                {
+                    patrons.Add((Patron)user);
+                }
+            }
+            return patrons;
+        }
+        public void GenerateFinancialReport()
+        {
+            double totalCollectedFines = 0;
+            double totalOutstandingPayments = 0;
+
+            Console.WriteLine("Financial Report");
+            Console.WriteLine("----------------");
+           
+
+            foreach (User patron in users)
+            {
+                if (patron is Patron)
+                {
+                    ((Patron)patron).updateFines();
+
+                    if (patron.Fees > 0)
+                    {
+                        totalCollectedFines += patron.Fees;
+                        Console.WriteLine($"Patron: {patron.Name}");
+                        Console.WriteLine($"Collected Fines: ${patron.Fees}");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        totalOutstandingPayments += Math.Abs(patron.Fees);
+                    }
+                }
+            }
+
+            Console.WriteLine("Summary");
+            Console.WriteLine($"Total Collected Fines: ${totalCollectedFines}");
+            Console.WriteLine($"Total Outstanding Payments: ${totalOutstandingPayments}");
+        }
+
 
 
         public void Register()

@@ -36,36 +36,7 @@ namespace UML_Project
             Console.WriteLine("| Outstanding Fines: {0}", Fees);
         }
 
-        public static void GenerateFinancialReport (List<Patron> patrons)
-        {
-            double totalCollectedFines = 0;
-            double totalOutstandingPayments = 0;
-
-            Console.WriteLine("Financial Report");
-            Console.WriteLine("----------------");
-
-            foreach (Patron patron in patrons)
-            {
-                patron.updateFines();
-
-                if (patron.Fees > 0)
-                {
-                    totalCollectedFines += patron.Fees;
-                    Console.WriteLine($"Patron: {patron.Name}");
-                    Console.WriteLine($"Collected Fines: ${patron.Fees}");
-                    Console.WriteLine();
-                }
-                else
-                {
-                    totalOutstandingPayments += Math.Abs(patron.Fees);
-                }
-            }
-
-            Console.WriteLine("Summary");
-            Console.WriteLine($"Total Collected Fines: ${totalCollectedFines}");
-            Console.WriteLine($"Total Outstanding Payments: ${totalOutstandingPayments}");
-        }
-
+       
 
     }
 

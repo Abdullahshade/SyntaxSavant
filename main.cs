@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Services;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading;
 
 
@@ -133,9 +133,8 @@ namespace UML_Project
 
                             else if (adminChoice == 4)
                             {
-                                List<Patron> patrons = librarySystem.GetPatrons();
 
-                                User.GenerateFinancialReport(patrons);
+                               librarySystem.GenerateFinancialReport();
                             }
                             else if (adminChoice == 5)
                             {
@@ -306,9 +305,8 @@ namespace UML_Project
                             }
                             else if (LibrarinChoice == 7)
                             {
-                                List<Patron> patrons = librarySystem.GetPatrons();
 
-                                User.GenerateFinancialReport(patrons);
+                                librarySystem.GenerateFinancialReport();
                             }
                             else if (LibrarinChoice == 8)
                             {
@@ -331,9 +329,7 @@ namespace UML_Project
                                         Console.WriteLine("Enter the message to send to user");
                                         string message = Console.ReadLine();
                                         Console.WriteLine("Message sent successfully!");
-                                        librarySystem.DeleteUser(MessagePatron);
-                                        MessagePatron.Message = message;
-                                        librarySystem.users.Add(MessagePatron);
+                                        MessagePatron.Message=  message;
                                         librarySystem.SaveUsersToFile();
                                     }
                                     else
@@ -453,7 +449,36 @@ namespace UML_Project
                                     }
                                     else if (choice == 2) // for notifications
                                     {
+                                        bool flag = true;
+                                        foreach (Book bo in ((Patron)currentUser).Reserveditems)
+                                        {
+                                           
+                                            if (bo.Availabilitystatus)
+                                            {
+                                                Console.WriteLine("The book \"" + bo.Title + "\" is available for borrowing");
+                                                flag = false;
 
+                                            }
+                                        }
+
+                                        if (flag)
+                                        {
+                                            Console.WriteLine("No notification ");
+                                        }else
+                                        {
+
+                                            Console.WriteLine("Do you want to borrow a book?");
+                                            Console.WriteLine("Y: for yes, N: for no");
+                                            string c = Console.ReadLine();
+                                            if (c == "Y" || c == "y")
+                                            {
+                                                ((Patron)currentUser).RequestBorrowing(librarySystem);
+
+                                                librarySystem.SaveBooksToFile();
+
+                                            }
+                                        }
+                                        
                                     }
                                     else
                                     {
