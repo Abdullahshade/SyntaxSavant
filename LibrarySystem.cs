@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +24,7 @@ namespace UML_Project
         int usersNumber = 1;
         public List<User> users;
         private string usersFilePath = "users.txt";
+        public List<Patron> patrons;
 
         public int UsersNumber { get => usersNumber; set => usersNumber = value; }
         public static List<Book> Books { get => books; set => books = value; }
@@ -42,6 +43,10 @@ namespace UML_Project
         public List<User> GetUsers()
         {
             return users;
+        }
+        public List <Patron > GetPatrons()
+        {
+            return patrons;
         }
         public User Login(string username, string password)
         {
@@ -290,7 +295,7 @@ namespace UML_Project
             {
 
                 DeleteBook(book);
-                
+
                 book.Availabilitystatus = true;
                 AddBookToBooks(book);
 
@@ -299,10 +304,10 @@ namespace UML_Project
             LoadBooksFromFile();
         }
 
-        public void GetNameOfPatronToCheckInBook(string username,string title)
+        public void GetNameOfPatronToCheckInBook(string username, string title)
         {
-            User user = users.Find(p  => p.Username == username);
-            Book borrowedBook = ((Patron)user).BorrowedItems.Find(b =>b.Title == title);
+            User user = users.Find(p => p.Username == username);
+            Book borrowedBook = ((Patron)user).BorrowedItems.Find(b => b.Title == title);
             ((Patron)user).DeleteBookFromBorrowedItems(borrowedBook);
             ((Patron)user).updateFines();
         }
@@ -397,7 +402,7 @@ namespace UML_Project
                 Console.WriteLine("Password isn't unique. Please enter a unique password.");
                 return false;
             }
-            
+
             return true;
         }
         public static bool IsValidContactInformation(string contactInformation)
@@ -415,7 +420,7 @@ namespace UML_Project
         {
             // To check if password is unique
             User user = users.Find(x => x.Password == password);
-            if(user == null)
+            if (user == null)
             {
                 return true;
             }
@@ -431,13 +436,13 @@ namespace UML_Project
             {
                 return true;
             }
-            
+
             return false;
         }
     }
 
 
-        
+
 
 
 
