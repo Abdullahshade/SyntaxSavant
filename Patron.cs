@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
-using static System.Reflection.Metadata.BlobBuilder;
 
 
 namespace UML_Project
@@ -27,17 +27,23 @@ namespace UML_Project
         public List<Book> BorrowedItems { get => borrowedItems; set => borrowedItems = value; }
         public List<Book> Reserveditems { get => reserveditems; set => reserveditems = value; }
 
+        public void DeleteBookFromBorrowedItems(Book book)
+        {
+            Book bo = BorrowedItems.Find(b => book.Title == b.Title);
+            BorrowedItems.Remove(bo);
+            SaveDataToFile();
+        }
         public void SaveDataToFile()
         {
-            FileStream fileStream = new FileStream(Name+"Borrowed.dat", FileMode.OpenOrCreate);
+            FileStream fileStream = new FileStream(Name + "Borrowed.dat", FileMode.OpenOrCreate);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             binaryFormatter.Serialize(fileStream, borrowedItems);
             fileStream.Close();
 
-           FileStream fileStream2 = new FileStream(Name + "reserved.dat", FileMode.OpenOrCreate);
-           BinaryFormatter binaryFormatter2 = new BinaryFormatter();
-          binaryFormatter2.Serialize(fileStream2, reserveditems);
-          fileStream2.Close();
+            FileStream fileStream2 = new FileStream(Name + "reserved.dat", FileMode.OpenOrCreate);
+            BinaryFormatter binaryFormatter2 = new BinaryFormatter();
+            binaryFormatter2.Serialize(fileStream2, reserveditems);
+            fileStream2.Close();
         }
         public void LoadDataFromFile()
         {
@@ -81,58 +87,64 @@ namespace UML_Project
         {
             LoadDataFromFile();
             Console.Write("Enter the title of the book you want to borrow: ");
-            string title = Console.ReadLine();
 
-
-            Book book = Librarian.FindBookByTitle(lb, title);
-            if (book != null)
+            try
             {
+                string title = Console.ReadLine();
+                Book book = Librarian.FindBookByTitle(lb, title);
 
-                if (book.GetAvailabilityStatus() && book.GetCopies() > 0)
+                if (book != null)
                 {
-                    foreach(Book newBook in borrowedItems)
-                    {
-                        if(book == newBook)
-                        {
-                            Console.WriteLine("You cant borrow 2 books with the same kind");
-                            return false;
-                        }
-                    }
-                    int cout = book.GetCopies();
-                    BorrowedItems.Add(book);
-                    book.SetCopies(--cout);
-                    book.updateBorrowedDate();
 
-                    if (cout == 0) book.EditAvabliabiltiyStatus();
+                    if (!book.GetAvailabilityStatus())
+                    {
+                        Console.WriteLine("Book already Borrowed ");
+                        return false;
+                    }
+
+                    BorrowedItems.Add(book);
+
+                    book.updateBorrowedDate();
+                    book.EditAvabliabiltiyStatus();
+
                     lb.SaveBooksToFile();
                     Console.WriteLine("Book borrowed successfully.");
                     SaveDataToFile();
 
                     return true;
+
                 }
+
                 else
                 {
-                    Console.WriteLine("The book is not available for borrowing.");
+                    Console.WriteLine("Book not found in the library.");
+                    return false;
                 }
-            }
-            else
+            } 
+            catch (Exception ex)
             {
-                Console.WriteLine("Book not found in the library.");
+                Console.WriteLine(ex.Message);
+                return false;
             }
-            return false;
         }
-
 
         public void RequestReservation(LibrarySystem lb)
         {
             Console.Write("Enter the title of the book you want to reserve: ");
             string title = Console.ReadLine();
+            Book borrowedBook = BorrowedItems.Find(b => b.Title == title);
+
+            if(borrowedBook != null)// if book already borrowed don't make reservation
+            {
+                Console.WriteLine("Can't reserve a book you already have");
+                return;
+            }
 
             // Check if a book is available in the library by title
             Book book = Librarian.FindBookByTitle(lb, title);
             if (book != null)
             {
-                if (book.GetAvailabilityStatus() && book.GetCopies() > 0)             // Check availability of copies available for reservation
+                if (!book.GetAvailabilityStatus())             // Check availability reservation
                 {
                     Reserveditems.Add(book);
 
@@ -155,7 +167,7 @@ namespace UML_Project
 
             foreach (Book book in Reserveditems)
             {
-                Console.WriteLine("|"+book.Title);
+                Console.WriteLine("|" + book.Title);
             }
         }
         public void ShowBorrowedBooks()
@@ -173,14 +185,14 @@ namespace UML_Project
 
             foreach (Book bo in borrowedItems)
             {
-                TimeSpan dif = DateTime.Now-  bo.BorrowedDate  ;
-                if(dif.TotalHours>72)
-                totalFees += dif.TotalHours/5;
+                TimeSpan dif = DateTime.Now - bo.BorrowedDate;
+                if (dif.TotalHours > 72)
+                    totalFees += dif.TotalHours / 5;
             }
 
-          
-            Fees = totalFees * 0.5;
-
+            double OutstandingFees = totalFees * 0.5;
+            Fees += OutstandingFees;
+            
         }
 
     }
