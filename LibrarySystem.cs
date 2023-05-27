@@ -24,9 +24,15 @@ namespace UML_Project
         int usersNumber = 1;
         public List<User> users;
         private string usersFilePath = "users.txt";
+        public List<Patron> patrons;
 
         public int UsersNumber { get => usersNumber; set => usersNumber = value; }
+        public static List<Book> Books { get => books; set => books = value; }
 
+        public List<Book> GetBooks()
+        {
+            return books;
+        }
         public LibrarySystem(string usersFilePath)
         {
             this.usersFilePath = usersFilePath;
@@ -37,6 +43,17 @@ namespace UML_Project
         public List<User> GetUsers()
         {
             return users;
+        }
+        public List<Patron> GetPatrons()
+        {
+            foreach(User user in users)
+            {
+                if(user.Role == UserRole.Patron)
+                {
+                    patrons.Add((Patron)user);
+                }
+            }
+            return patrons;
         }
         public User Login(string username, string password)
         {
@@ -81,7 +98,7 @@ namespace UML_Project
             do
             {
                 Console.Write("Enter your phone number: ");
-                contactInformation = Console.ReadLine();    
+                contactInformation = Console.ReadLine();
             } while (!IsValidContactInformation(contactInformation));
 
 
@@ -180,7 +197,7 @@ namespace UML_Project
         {
             DateTime now = DateTime.Now;
 
-            Console.Write("=========================\nLibrary Report "+ now.ToString("F")+ "\n=========================\n|Number of books : "+books.Count()+"\n|Number of users : "+users.Count() + "\n|books currently on loan : ");
+            Console.Write("=========================\nLibrary Report " + now.ToString("F") + "\n=========================\n|Number of books : " + books.Count() + "\n|Number of users : " + users.Count() + "\n|books currently on loan : ");
             int counter = 0;
             foreach (Book bo in books)
             {
@@ -202,7 +219,7 @@ namespace UML_Project
                     {
                         string[] parts = line.Split(',');
                         UserRole role = (UserRole)Enum.Parse(typeof(UserRole), parts[0]);
-                        
+
 
                         if (role == UserRole.Admin)
                         {
@@ -226,7 +243,7 @@ namespace UML_Project
                             users.Add(librarian);
                             counter++;
                         }
-                        else if (role == UserRole.Patron) 
+                        else if (role == UserRole.Patron)
                         {
                             // Create a regular User object if the user is not an admin or librarin 
                             string name = parts[1];
@@ -234,7 +251,7 @@ namespace UML_Project
                             string password = parts[3];
                             string id = parts[4];
                             string contactInformation = parts[5];
-        
+
                             Patron patron = new Patron(name, username, password, contactInformation, role, int.Parse(id));
                             users.Add(patron);
                             counter++;
@@ -277,6 +294,34 @@ namespace UML_Project
             {
                 Console.WriteLine("Error saving users to file: " + e.Message);
             }
+        }
+        public void ReturnBook(string title)
+        {
+            Book book = FindBookByTitle(title);
+            if (book != null)
+            {
+
+                DeleteBook(book);
+
+                book.Availabilitystatus = true;
+                AddBookToBooks(book);
+
+                SaveBooksToFile();
+            }
+            LoadBooksFromFile();
+        }
+
+        public bool GetNameOfPatronToCheckInBook(string username, string title)
+        {
+            User user = users.Find(p => p.Username == username);
+            Book borrowedBook = ((Patron)user).BorrowedItems.Find(b => b.Title == title);
+            if(borrowedBook == null)
+            {
+                return false;
+            }
+            ((Patron)user).DeleteBookFromBorrowedItems(borrowedBook);
+            ((Patron)user).updateFines();
+            return true;
         }
 
         public void SaveBooksToFile()
@@ -322,6 +367,8 @@ namespace UML_Project
         {
             int id = user.Id;
             users.RemoveAt(id);
+            SaveUsersToFile();
+            LoadUsersFromFile();
         }
 
         public static bool IsValidName(string name)
@@ -369,7 +416,7 @@ namespace UML_Project
                 Console.WriteLine("Password isn't unique. Please enter a unique password.");
                 return false;
             }
-            
+
             return true;
         }
         public static bool IsValidContactInformation(string contactInformation)
@@ -387,7 +434,7 @@ namespace UML_Project
         {
             // To check if password is unique
             User user = users.Find(x => x.Password == password);
-            if(user == null)
+            if (user == null)
             {
                 return true;
             }
@@ -403,13 +450,13 @@ namespace UML_Project
             {
                 return true;
             }
-            
+
             return false;
         }
     }
 
 
-        
+
 
 
 

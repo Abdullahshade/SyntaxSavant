@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -37,7 +37,7 @@ namespace UML_Project
         public DateTime Duetime { get => duetime; set => duetime = value; }
         public bool Availabilitystatus { get => availabilitystatus; set => availabilitystatus = value; }
 
-        public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00, bool availabilitystatus = true)
+        public Book(string title = "No Title", string author = "No Author", int publicationyear = 0000, string genre = "No Genre", int ISBN = 00,  bool availabilitystatus = true)
         {
             this.title = title;
             this.author = author;
@@ -45,7 +45,7 @@ namespace UML_Project
             this.genre = genre;
             this.ISBN1 = GenerateISBN();
             this.availabilitystatus = availabilitystatus;
-
+            
         }
 
         string GenerateISBN()
@@ -99,7 +99,7 @@ namespace UML_Project
             else
                 Console.WriteLine("The book is not available.");
         }
-
+        
         public void EditAvabliabiltiyStatus()
         {
             availabilitystatus = !GetAvailabilityStatus();
@@ -136,7 +136,7 @@ namespace UML_Project
             //end of publictonyear
 
         }
-
+        
         public void ShowISBN()
         {
             Console.WriteLine("ISBN: " + this.ISBN1);
