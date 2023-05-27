@@ -60,17 +60,18 @@ namespace UML_Project
                 string newPass = Console.ReadLine();
                 userToModify.Password = newPass;
 
-            }else if (readL == 2)
+            }
+            else if (readL == 2)
             {
-               
-                    Console.WriteLine("Enter the new role for the user:");
-                    UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
 
-                    SetRole(userToModify, newRole);
-                    lb.SaveUsersToFile();
+                Console.WriteLine("Enter the new role for the user:");
+                UserRole newRole = (UserRole)Enum.Parse(typeof(UserRole), Console.ReadLine());
 
-                
-                
+                SetRole(userToModify, newRole);
+                lb.SaveUsersToFile();
+
+
+
                 lb.LoadUsersFromFile();
             }
             else
